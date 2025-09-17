@@ -80,7 +80,7 @@ export interface AirtableRecord {
   fields: {
     [key: string]: any;
   };
-  createdTime: string;
+  createdTime?: string;
 }
 
 export interface AirtableCampaign {

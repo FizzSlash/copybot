@@ -132,7 +132,7 @@ export class AirtableService {
     console.log(`Would sync campaign: ${airtableCampaign.name}`);
   }
 
-  private mapAirtableRecord(record: AirtableRecord): AirtableCampaign {
+  private mapAirtableRecord(record: any): AirtableCampaign {
     const fields = record.fields;
     
     return {
