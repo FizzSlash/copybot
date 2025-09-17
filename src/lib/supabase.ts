@@ -70,7 +70,7 @@ export class DatabaseService {
 
     const { data, error } = await this.supabase
       .from('clients')
-      .insert({ ...client, user_id: user.id })
+      .insert({ ...client, user_id: user.id } as any)
       .select()
       .single();
     
@@ -165,7 +165,7 @@ export class DatabaseService {
 
     const { data, error } = await this.supabase
       .from('campaigns')
-      .insert({ ...campaign, user_id: user.id })
+      .insert({ ...campaign, user_id: user.id } as any)
       .select()
       .single();
     
@@ -203,7 +203,7 @@ export class DatabaseService {
 
     const { data, error } = await this.supabase
       .from('email_copy')
-      .insert({ ...emailCopy, user_id: user.id })
+      .insert({ ...emailCopy, user_id: user.id } as any)
       .select()
       .single();
     
@@ -245,7 +245,7 @@ export class DatabaseService {
         ...note, 
         user_id: user.id,
         created_by: user.id 
-      })
+      } as any)
       .select()
       .single();
     
@@ -272,7 +272,7 @@ export class DatabaseService {
 
     const { data, error } = await this.supabase
       .from('scraped_content')
-      .insert({ ...content, user_id: user.id })
+      .insert({ ...content, user_id: user.id } as any)
       .select()
       .single();
     
