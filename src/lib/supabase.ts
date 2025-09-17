@@ -64,7 +64,7 @@ export class DatabaseService {
     return data;
   }
 
-  async createClient(client: Omit<Database['public']['Tables']['clients']['Insert'], 'user_id'>) {
+  async createClient(client: Omit<Database['public']['Tables']['clients']['Insert'], 'user_id'>): Promise<any> {
     const { data: { user } } = await this.supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -159,7 +159,7 @@ export class DatabaseService {
     return data;
   }
 
-  async createCampaign(campaign: Omit<Database['public']['Tables']['campaigns']['Insert'], 'user_id'>) {
+  async createCampaign(campaign: Omit<Database['public']['Tables']['campaigns']['Insert'], 'user_id'>): Promise<any> {
     const { data: { user } } = await this.supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -197,7 +197,7 @@ export class DatabaseService {
     return data;
   }
 
-  async createEmailCopy(emailCopy: Omit<Database['public']['Tables']['email_copy']['Insert'], 'user_id'>) {
+  async createEmailCopy(emailCopy: Omit<Database['public']['Tables']['email_copy']['Insert'], 'user_id'>): Promise<any> {
     const { data: { user } } = await this.supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -235,7 +235,7 @@ export class DatabaseService {
     return data || [];
   }
 
-  async createClientNote(note: Omit<Database['public']['Tables']['client_notes']['Insert'], 'user_id' | 'created_by'>) {
+  async createClientNote(note: Omit<Database['public']['Tables']['client_notes']['Insert'], 'user_id' | 'created_by'>): Promise<any> {
     const { data: { user } } = await this.supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -266,7 +266,7 @@ export class DatabaseService {
     return data || [];
   }
 
-  async createScrapedContent(content: Omit<Database['public']['Tables']['scraped_content']['Insert'], 'user_id'>) {
+  async createScrapedContent(content: Omit<Database['public']['Tables']['scraped_content']['Insert'], 'user_id'>): Promise<any> {
     const { data: { user } } = await this.supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
