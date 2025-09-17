@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# CopyBot - AI Email Copy Generator
+Sitemap: https://your-domain.vercel.app/sitemap.xml
