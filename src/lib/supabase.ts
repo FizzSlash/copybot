@@ -81,7 +81,7 @@ export class DatabaseService {
   async updateClient(id: string, updates: Partial<Database['public']['Tables']['clients']['Update']>) {
     const { data, error } = await this.supabase
       .from('clients')
-      .update(updates)
+      .update(updates as any)
       .eq('id', id)
       .select()
       .single();
@@ -176,7 +176,7 @@ export class DatabaseService {
   async updateCampaign(id: string, updates: Partial<Database['public']['Tables']['campaigns']['Update']>) {
     const { data, error } = await this.supabase
       .from('campaigns')
-      .update(updates)
+      .update(updates as any)
       .eq('id', id)
       .select()
       .single();
@@ -214,7 +214,7 @@ export class DatabaseService {
   async updateEmailCopy(id: string, updates: Partial<Database['public']['Tables']['email_copy']['Update']>) {
     const { data, error } = await this.supabase
       .from('email_copy')
-      .update(updates)
+      .update(updates as any)
       .eq('id', id)
       .select()
       .single();
