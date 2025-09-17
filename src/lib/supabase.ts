@@ -47,14 +47,20 @@ export class DatabaseService {
     return data;
   }
 
-  async getClient(id: string) {
+  async getClient(id: string): Promise<any | null> {
     const { data, error } = await this.supabase
       .from('clients')
       .select('*')
       .eq('id', id)
       .single();
     
-    if (error) throw error;
+    if (error) {
+      if (error.code === 'PGRST116') {
+        // No rows found
+        return null;
+      }
+      throw error;
+    }
     return data;
   }
 
@@ -117,7 +123,7 @@ export class DatabaseService {
     return data;
   }
 
-  async getCampaign(id: string) {
+  async getCampaign(id: string): Promise<any | null> {
     const { data, error } = await this.supabase
       .from('campaigns')
       .select(`
@@ -143,7 +149,13 @@ export class DatabaseService {
       .eq('id', id)
       .single();
     
-    if (error) throw error;
+    if (error) {
+      if (error.code === 'PGRST116') {
+        // No rows found
+        return null;
+      }
+      throw error;
+    }
     return data;
   }
 
@@ -212,7 +224,7 @@ export class DatabaseService {
   }
 
   // Client notes operations
-  async getClientNotes(clientId: string) {
+  async getClientNotes(clientId: string): Promise<any[]> {
     const { data, error } = await this.supabase
       .from('client_notes')
       .select('*')
@@ -220,7 +232,7 @@ export class DatabaseService {
       .order('created_at', { ascending: false });
     
     if (error) throw error;
-    return data;
+    return data || [];
   }
 
   async createClientNote(note: Omit<Database['public']['Tables']['client_notes']['Insert'], 'user_id' | 'created_by'>) {
@@ -242,7 +254,7 @@ export class DatabaseService {
   }
 
   // Scraped content operations
-  async getScrapedContent(clientId: string) {
+  async getScrapedContent(clientId: string): Promise<any[]> {
     const { data, error } = await this.supabase
       .from('scraped_content')
       .select('*')
@@ -251,7 +263,7 @@ export class DatabaseService {
       .order('last_scraped', { ascending: false });
     
     if (error) throw error;
-    return data;
+    return data || [];
   }
 
   async createScrapedContent(content: Omit<Database['public']['Tables']['scraped_content']['Insert'], 'user_id'>) {

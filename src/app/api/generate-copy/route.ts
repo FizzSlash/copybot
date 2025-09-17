@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const client = await dbService.getClient(campaign.client_id);
+    const client = await dbService.getClient(campaign.client_id as string);
     if (!client) {
       return NextResponse.json(
         { error: 'Client not found' },
@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
 
     // Get additional context data
     const [clientNotes, scrapedContent] = await Promise.all([
-      dbService.getClientNotes(campaign.client_id),
-      dbService.getScrapedContent(campaign.client_id)
+      dbService.getClientNotes(campaign.client_id as string),
+      dbService.getScrapedContent(campaign.client_id as string)
     ]);
 
     // Prepare context for AI generation
