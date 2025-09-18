@@ -292,23 +292,45 @@ export class DatabaseService {
   }
 
   async createClientNote(note: Omit<Database['public']['Tables']['client_notes']['Insert'], 'user_id' | 'created_by'>): Promise<any> {
-    const { data: { user } } = await this.supabase.auth.getUser();
+    console.log('🗄️ DB SERVICE: Starting createClientNote (internal tool - no auth)...');
     
-    // For development: use a default user ID if no user is authenticated
-    const userId = user?.id || 'dev-user-' + Date.now();
-
-    const { data, error } = await this.supabase
-      .from('client_notes')
-      .insert({ 
+    try {
+      // Internal tool: use fixed UUID, no authentication required
+      const userId = '12345678-1234-1234-1234-123456789abc';
+      
+      const insertData = { 
         ...note, 
         user_id: userId,
         created_by: userId 
-      } as any)
-      .select()
-      .single();
-    
-    if (error) throw error;
-    return data;
+      };
+      console.log('📝 DB SERVICE: Note insert data prepared:', insertData);
+
+      const { data, error } = await this.supabase
+        .from('client_notes')
+        .insert(insertData as any)
+        .select()
+        .single();
+      
+      console.log('📊 DB SERVICE: Supabase response:', { data, error });
+      
+      if (error) {
+        console.error('❌ DB SERVICE: Note insert error:', error);
+        throw error;
+      }
+      
+      console.log('✅ DB SERVICE: Note created successfully');
+      return data;
+      
+    } catch (dbError) {
+      console.error('💥 DB SERVICE: Exception in createClientNote:', dbError);
+      console.error('🔍 DB SERVICE: Exception details:', {
+        message: dbError instanceof Error ? dbError.message : 'Unknown error',
+        code: (dbError as any)?.code,
+        details: (dbError as any)?.details,
+        hint: (dbError as any)?.hint
+      });
+      throw dbError;
+    }
   }
 
   // Scraped content operations
