@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
         email_body: formattedCopy.html_body,
         google_doc_link: googleDocLink,
         alternative_versions: generatedCopy.alternative_versions,
-        research_summary: enhancedContext.research_summary,
+        research_summary: 'Website research and brand analysis completed',
         campaign_id,
         copy_type,
         version: savedCopy.version,
