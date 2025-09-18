@@ -123,10 +123,13 @@ export default function DashboardPage() {
             <span>Sync Airtable</span>
           </button>
           
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+          <Link 
+            href="/dashboard/campaigns/new"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+          >
             <Plus className="h-4 w-4" />
             <span>New Campaign</span>
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -274,9 +277,12 @@ export default function DashboardPage() {
             <button className="bg-white/20 text-white px-6 py-3 rounded-lg hover:bg-white/30 transition-colors">
               Sync Airtable
             </button>
-            <button className="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors font-medium">
+            <Link 
+              href="/dashboard/campaigns/new"
+              className="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors font-medium"
+            >
               New Campaign
-            </button>
+            </Link>
           </div>
         </div>
       </div>

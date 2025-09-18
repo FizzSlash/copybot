@@ -185,6 +185,16 @@ export class DatabaseService {
     return data;
   }
 
+  async deleteCampaign(id: string): Promise<boolean> {
+    const { error } = await this.supabase
+      .from('campaigns')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
+  }
+
   // Email copy operations
   async getEmailCopy(campaignId: string) {
     const { data, error } = await this.supabase

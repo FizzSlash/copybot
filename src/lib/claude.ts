@@ -234,6 +234,118 @@ Return only the subject lines, one per line.`;
     }
   }
 
+  async generateEmailCopyAdvanced(
+    request: CopyGenerationRequest & { campaign_id: string },
+    enhancedContext: any
+  ): Promise<CopyGenerationResponse> {
+    try {
+      // Enhanced prompt that incorporates your Make.com workflow patterns
+      const prompt = this.buildAdvancedContextPrompt(enhancedContext, request);
+
+      const message = await anthropic.messages.create({
+        model: 'claude-3-5-sonnet-20241022',
+        max_tokens: 5000,
+        temperature: 0.2, // Lower temperature for more consistent output
+        messages: [
+          {
+            role: 'user',
+            content: prompt
+          }
+        ]
+      });
+
+      const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
+      
+      // Enhanced parsing for HTML table structure (like your automation)
+      return this.parseAdvancedResponse(responseText);
+
+    } catch (error) {
+      console.error('Advanced copy generation error:', error);
+      throw new Error('Failed to generate advanced email copy. Please try again.');
+    }
+  }
+
+  private buildAdvancedContextPrompt(context: any, request: any): string {
+    const { client, campaign, flow_details, offer_details, ab_test_focus, relevant_links } = context;
+    
+    return `You are an expert email copywriter creating ${request.copy_type} copy. Follow the exact structure and guidelines below.
+
+## CLIENT & BRAND INFORMATION
+Name: ${client.name}
+Company: ${client.company || 'N/A'}
+Website: ${client.website_url || 'N/A'}
+
+Brand Voice: ${client.brand_questionnaire?.brand_voice || 'Professional'}
+Target Audience: ${client.brand_questionnaire?.target_audience || 'N/A'}
+Key Messaging: ${client.brand_questionnaire?.key_messaging || 'N/A'}
+
+## CAMPAIGN DETAILS
+Campaign: ${campaign.name}
+Type: ${campaign.type}
+Flow Type: ${flow_details}
+Brief: ${campaign.brief}
+
+${offer_details ? `OFFER: ${offer_details}` : ''}
+${ab_test_focus ? `A/B TEST FOCUS: ${ab_test_focus}` : ''}
+${relevant_links ? `IMPORTANT LINKS: ${relevant_links}` : ''}
+
+## COPY REQUIREMENTS
+- Copy Type: ${request.copy_type}
+- Tone: ${request.tone || 'professional'}
+- Length: ${request.length || 'medium'} (${this.getLengthGuidance(request.length)})
+- Focus: ${request.focus || 'General promotion'}
+
+## CRITICAL INSTRUCTIONS
+1. Do NOT make up any information - if unsure, use {insert here}
+2. Include subject line (max 6 words) and preview text (max 6 words)
+3. Keep body copy sections under 160 characters each
+4. Include at least 1 CTA "above the fold"
+5. Follow HTML email best practices
+
+## OUTPUT FORMAT
+Respond with JSON in this exact structure:
+{
+  "subject_lines": ["Subject 1", "Subject 2", "Subject 3"],
+  "preview_text": "Preview text here",
+  "email_body": "Complete email body with proper HTML formatting",
+  "alternative_versions": [
+    {
+      "subject_line": "Alternative subject",
+      "email_body": "Alternative body"
+    }
+  ]
+}`;
+  }
+
+  private getLengthGuidance(length?: string): string {
+    switch (length) {
+      case 'short': return '3-5 sections';
+      case 'long': return '9-12 sections';
+      default: return '6-8 sections';
+    }
+  }
+
+  private parseAdvancedResponse(responseText: string): CopyGenerationResponse {
+    try {
+      // Try to parse JSON response first
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsedResponse = JSON.parse(jsonMatch[0]);
+        return {
+          subject_lines: parsedResponse.subject_lines || ['Generated Subject Line'],
+          preview_text: parsedResponse.preview_text || 'Check this out...',
+          email_body: parsedResponse.email_body || responseText,
+          alternative_versions: parsedResponse.alternative_versions || []
+        };
+      }
+    } catch (parseError) {
+      console.error('Failed to parse advanced JSON response:', parseError);
+    }
+
+    // Enhanced fallback parsing
+    return this.fallbackParseResponse(responseText);
+  }
+
   async optimizeEmailCopy(
     originalCopy: string,
     feedback: string,

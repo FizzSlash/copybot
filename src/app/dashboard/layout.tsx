@@ -33,10 +33,13 @@ export default function DashboardLayout({
                 <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
               </button>
               
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+              <Link 
+                href="/dashboard/campaigns/new"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+              >
                 <Plus className="h-4 w-4" />
                 <span>New Campaign</span>
-              </button>
+              </Link>
 
               <div className="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center">
                 <span className="text-sm font-medium text-gray-700">U</span>
