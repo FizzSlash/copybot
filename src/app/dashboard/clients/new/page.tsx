@@ -137,9 +137,20 @@ export default function NewClientPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('🚀 FORM: Starting client creation form submission...');
+    
     setIsLoading(true);
 
     try {
+      console.log('📤 FORM: Form data being sent:', {
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        website_url: formData.website_url,
+        questionnaire_fields: Object.keys(formData.brand_questionnaire),
+        questionnaire_filled: Object.values(formData.brand_questionnaire).filter(v => v && v.length > 0).length
+      });
+
       // This would save to Supabase
       const response = await fetch('/api/clients', {
         method: 'POST',
@@ -149,19 +160,31 @@ export default function NewClientPage() {
         body: JSON.stringify(formData),
       });
 
+      console.log('📥 FORM: API response status:', response.status, response.statusText);
+
       if (!response.ok) {
-        throw new Error('Failed to create client');
+        const errorData = await response.json();
+        console.error('❌ FORM: API error response:', errorData);
+        throw new Error(errorData.error || 'Failed to create client');
       }
 
       const client = await response.json();
+      console.log('✅ FORM: Client created successfully:', client);
       
       // Redirect to client profile or clients list
+      console.log('🔄 FORM: Redirecting to clients list...');
       window.location.href = '/dashboard/clients';
     } catch (error) {
-      console.error('Error creating client:', error);
-      alert('Failed to create client. Please try again.');
+      console.error('💥 FORM: Error creating client:', error);
+      console.error('🔍 FORM: Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        type: typeof error,
+        stack: error instanceof Error ? error.stack : undefined
+      });
+      alert(`Failed to create client: ${error instanceof Error ? error.message : 'Unknown error'}. Check console for details.`);
     } finally {
       setIsLoading(false);
+      console.log('🏁 FORM: Form submission completed');
     }
   };
 

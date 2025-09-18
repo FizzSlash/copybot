@@ -65,29 +65,70 @@ export class DatabaseService {
   }
 
   async createClient(client: Omit<Database['public']['Tables']['clients']['Insert'], 'user_id'>): Promise<any> {
-    const { data: { user } } = await this.supabase.auth.getUser();
+    console.log('🗄️ DB SERVICE: Starting createClient...');
     
-    if (!user) {
-      // For development: use service role to bypass RLS
-      const { data, error } = await supabaseAdmin
+    try {
+      const { data: { user } } = await this.supabase.auth.getUser();
+      console.log('👤 DB SERVICE: Auth check result:', { 
+        hasUser: !!user, 
+        userId: user?.id,
+        userEmail: user?.email 
+      });
+      
+      if (!user) {
+        console.log('🔑 DB SERVICE: No user authenticated, using service role admin client...');
+        console.log('🌐 DB SERVICE: Environment check:', {
+          hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+          hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+          supabaseUrlStart: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 20)
+        });
+        
+        const insertData = { ...client, user_id: 'dev-user-123' };
+        console.log('📝 DB SERVICE: Insert data prepared:', insertData);
+        
+        const { data, error } = await supabaseAdmin
+          .from('clients')
+          .insert(insertData as any)
+          .select()
+          .single();
+        
+        console.log('📊 DB SERVICE: Supabase admin response:', { data, error });
+        
+        if (error) {
+          console.error('❌ DB SERVICE: Supabase admin insert error:', error);
+          throw error;
+        }
+        
+        console.log('✅ DB SERVICE: Client created successfully with admin client');
+        return data;
+      }
+
+      console.log('👤 DB SERVICE: User authenticated, using regular client...');
+      // Production: normal user-authenticated insert
+      const { data, error } = await this.supabase
         .from('clients')
-        .insert({ ...client, user_id: 'dev-user-123' } as any)
+        .insert({ ...client, user_id: user.id } as any)
         .select()
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error('❌ DB SERVICE: Regular client insert error:', error);
+        throw error;
+      }
+      
+      console.log('✅ DB SERVICE: Client created successfully with regular client');
       return data;
+      
+    } catch (dbError) {
+      console.error('💥 DB SERVICE: Exception in createClient:', dbError);
+      console.error('🔍 DB SERVICE: Exception details:', {
+        message: dbError instanceof Error ? dbError.message : 'Unknown error',
+        code: (dbError as any)?.code,
+        details: (dbError as any)?.details,
+        hint: (dbError as any)?.hint
+      });
+      throw dbError;
     }
-
-    // Production: normal user-authenticated insert
-    const { data, error } = await this.supabase
-      .from('clients')
-      .insert({ ...client, user_id: user.id } as any)
-      .select()
-      .single();
-    
-    if (error) throw error;
-    return data;
   }
 
   async updateClient(id: string, updates: any): Promise<any> {
