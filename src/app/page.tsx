@@ -14,12 +14,6 @@ export default function HomePage() {
             </div>
             <div className="flex items-center space-x-4">
               <Link 
-                href="/auth/signin" 
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link 
                 href="/dashboard" 
                 className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
               >

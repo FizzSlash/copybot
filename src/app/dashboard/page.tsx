@@ -118,21 +118,15 @@ export default function DashboardPage() {
         </div>
         
         <div className="flex space-x-4">
-          <Link 
-            href="/dashboard/campaigns/sync"
-            className="bg-white text-gray-700 px-4 py-2 rounded-lg border hover:bg-gray-50 transition-colors flex items-center space-x-2"
-          >
+          <button className="bg-white text-gray-700 px-4 py-2 rounded-lg border hover:bg-gray-50 transition-colors flex items-center space-x-2">
             <TrendingUp className="h-4 w-4" />
             <span>Sync Airtable</span>
-          </Link>
+          </button>
           
-          <Link 
-            href="/dashboard/campaigns/new"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-          >
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
             <Plus className="h-4 w-4" />
             <span>New Campaign</span>
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -277,18 +271,12 @@ export default function DashboardPage() {
             <p className="text-blue-100">Start a new campaign or sync your latest projects from Airtable.</p>
           </div>
           <div className="flex space-x-4">
-            <Link 
-              href="/dashboard/campaigns/sync"
-              className="bg-white/20 text-white px-6 py-3 rounded-lg hover:bg-white/30 transition-colors"
-            >
+            <button className="bg-white/20 text-white px-6 py-3 rounded-lg hover:bg-white/30 transition-colors">
               Sync Airtable
-            </Link>
-            <Link 
-              href="/dashboard/campaigns/new"
-              className="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors font-medium"
-            >
+            </button>
+            <button className="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors font-medium">
               New Campaign
-            </Link>
+            </button>
           </div>
         </div>
       </div>
