@@ -78,10 +78,13 @@ export default function DashboardLayout({
             </Link>
             
             <div className="pt-4 mt-4 border-t border-gray-200">
-              <button className="w-full flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+              <Link 
+                href="/dashboard/settings" 
+                className="w-full flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
                 <Settings className="h-5 w-5" />
                 <span>Settings</span>
-              </button>
+              </Link>
             </div>
           </nav>
         </aside>
