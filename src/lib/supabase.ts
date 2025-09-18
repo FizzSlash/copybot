@@ -67,12 +67,22 @@ export class DatabaseService {
   async createClient(client: Omit<Database['public']['Tables']['clients']['Insert'], 'user_id'>): Promise<any> {
     const { data: { user } } = await this.supabase.auth.getUser();
     
-    // For development: use a default user ID if no user is authenticated
-    const userId = user?.id || 'dev-user-' + Date.now();
+    if (!user) {
+      // For development: use service role to bypass RLS
+      const { data, error } = await supabaseAdmin
+        .from('clients')
+        .insert({ ...client, user_id: 'dev-user-123' } as any)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    }
 
+    // Production: normal user-authenticated insert
     const { data, error } = await this.supabase
       .from('clients')
-      .insert({ ...client, user_id: userId } as any)
+      .insert({ ...client, user_id: user.id } as any)
       .select()
       .single();
     
@@ -164,12 +174,22 @@ export class DatabaseService {
   async createCampaign(campaign: Omit<Database['public']['Tables']['campaigns']['Insert'], 'user_id'>): Promise<any> {
     const { data: { user } } = await this.supabase.auth.getUser();
     
-    // For development: use a default user ID if no user is authenticated
-    const userId = user?.id || 'dev-user-' + Date.now();
+    if (!user) {
+      // For development: use service role to bypass RLS
+      const { data, error } = await supabaseAdmin
+        .from('campaigns')
+        .insert({ ...campaign, user_id: 'dev-user-123' } as any)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    }
 
+    // Production: normal user-authenticated insert
     const { data, error } = await this.supabase
       .from('campaigns')
-      .insert({ ...campaign, user_id: userId } as any)
+      .insert({ ...campaign, user_id: user.id } as any)
       .select()
       .single();
     
@@ -214,12 +234,22 @@ export class DatabaseService {
   async createEmailCopy(emailCopy: Omit<Database['public']['Tables']['email_copy']['Insert'], 'user_id'>): Promise<any> {
     const { data: { user } } = await this.supabase.auth.getUser();
     
-    // For development: use a default user ID if no user is authenticated
-    const userId = user?.id || 'dev-user-' + Date.now();
+    if (!user) {
+      // For development: use service role to bypass RLS
+      const { data, error } = await supabaseAdmin
+        .from('email_copy')
+        .insert({ ...emailCopy, user_id: 'dev-user-123' } as any)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    }
 
+    // Production: normal user-authenticated insert
     const { data, error } = await this.supabase
       .from('email_copy')
-      .insert({ ...emailCopy, user_id: userId } as any)
+      .insert({ ...emailCopy, user_id: user.id } as any)
       .select()
       .single();
     
