@@ -89,24 +89,47 @@ export default function NewClientPage() {
 
     setIsScrapingWebsite(true);
     try {
-      // This would integrate with your Perplexity-like scraping
-      // For now, it's a placeholder that would call your scraping API
-      await new Promise(resolve => setTimeout(resolve, 3000)); // Simulate API call
+      // Use Claude to scrape and analyze the website
+      const response = await fetch('/api/scrape-website', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: formData.website_url,
+          flow_type: 'general' // General brand analysis
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Scraping failed');
+      }
+
+      const { data } = await response.json();
       
-      // Auto-populate some fields based on scraped data
+      // Auto-populate fields based on Claude's analysis
       setFormData(prev => ({
         ...prev,
+        company: data.title || prev.company,
         brand_questionnaire: {
           ...prev.brand_questionnaire,
-          brand_voice: 'Professional and approachable', // This would come from scraping
-          tone_examples: 'Based on website analysis...', // This would come from scraping
+          brand_voice: data.brand_voice_analysis || prev.brand_questionnaire.brand_voice,
+          target_audience: data.target_audience || prev.brand_questionnaire.target_audience,
+          key_messaging: data.key_messaging?.join(', ') || prev.brand_questionnaire.key_messaging,
+          brand_personality: data.brand_personality || prev.brand_questionnaire.brand_personality,
+          competitors: data.competitors_mentioned || prev.brand_questionnaire.competitors,
+          pain_points: data.pain_points_addressed || prev.brand_questionnaire.pain_points,
+          unique_value_props: data.unique_value_props || prev.brand_questionnaire.unique_value_props,
+          tone_examples: data.tone_examples?.join('\n\n') || prev.brand_questionnaire.tone_examples,
+          content_preferences: data.product_info || prev.brand_questionnaire.content_preferences
         }
       }));
       
-      alert('Website information scraped successfully! Brand voice and tone examples have been auto-populated.');
+      alert('Website scraped successfully! Brand information has been auto-populated from Claude analysis.');
     } catch (error) {
       console.error('Website scraping failed:', error);
-      alert('Failed to scrape website. Please fill in the information manually.');
+      alert(`Failed to scrape website: ${error instanceof Error ? error.message : 'Unknown error'}. Please fill in the information manually.`);
     } finally {
       setIsScrapingWebsite(false);
     }
