@@ -86,7 +86,7 @@ REVISION INSTRUCTIONS:
 - Focus on the specific improvement requested
 
 CURRENT EMAIL BLOCKS TO REVISE:
-${current_copy?.email_blocks?.map((block, index) => `Block ${index + 1} (${block.type}): ${block.content}`).join('\n') || 'No current blocks'}
+${current_copy?.email_blocks?.map((block: any, index: number) => `Block ${index + 1} (${block.type}): ${block.content}`).join('\n') || 'No current blocks'}
 
 ` : ''}
 
