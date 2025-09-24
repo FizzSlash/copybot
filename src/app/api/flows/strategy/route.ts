@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Step 1: Scrape website for strategic insights
-    let scrapedInsights = [];
+    let scrapedInsights: string[] = [];
     if (client?.website_url) {
       try {
         console.log('🔍 FLOW STRATEGY API: Scraping website for insights...');
