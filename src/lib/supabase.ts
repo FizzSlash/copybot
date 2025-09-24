@@ -447,6 +447,3 @@ export class DatabaseService {
     return { id, ...updates, updated_at: new Date().toISOString() };
   }
 }
-    return { id, ...updates, updated_at: new Date().toISOString() };
-  }
-}

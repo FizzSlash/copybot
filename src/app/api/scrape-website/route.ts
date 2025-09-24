@@ -208,7 +208,3 @@ Respond with ONLY valid JSON.`;
     }, { status: 500 });
   }
 }
-      content: null
-    }, { status: 500 });
-  }
-}
