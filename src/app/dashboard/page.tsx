@@ -95,7 +95,7 @@ export default function DashboardPage() {
     activeCampaigns: savedCopies.filter(copy => 
       new Date(copy.send_date) > new Date()
     ).length + savedFlows.length, // All flows are considered active
-    totalClients: [...new Set([...savedCopies.map(c => c.client), ...savedFlows.map(f => f.client)])].length,
+    totalClients: Array.from(new Set([...savedCopies.map(c => c.client), ...savedFlows.map(f => f.client)])).length,
     copiesGenerated: savedCopies.length + savedFlows.reduce((sum, flow) => sum + (flow.email_count || 1), 0)
   };
 

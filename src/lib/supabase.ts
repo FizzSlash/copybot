@@ -339,9 +339,12 @@ export class DatabaseService {
     try {
       console.log('📝 DB SERVICE: Note update data:', updates);
 
-      const { data, error } = await this.supabase
+      const { data, error } = await (this.supabase as any)
         .from('client_notes')
-        .update(updates)
+        .update({
+          note: updates.note,
+          category: updates.category
+        })
         .eq('id', id)
         .select()
         .single();
@@ -441,6 +444,9 @@ export class DatabaseService {
   async updateSavedCopy(id: string, updates: any): Promise<any> {
     // Mock update for now
     console.log('✅ SUPABASE: Mock copy updated:', id);
+    return { id, ...updates, updated_at: new Date().toISOString() };
+  }
+}
     return { id, ...updates, updated_at: new Date().toISOString() };
   }
 }

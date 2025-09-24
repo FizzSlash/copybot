@@ -38,6 +38,10 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    if (!response) {
+      throw new Error('Failed to fetch URL with all attempted user agents');
+    }
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
@@ -200,6 +204,10 @@ Respond with ONLY valid JSON.`;
     return NextResponse.json({
       success: false,
       error: error.message,
+      content: null
+    }, { status: 500 });
+  }
+}
       content: null
     }, { status: 500 });
   }

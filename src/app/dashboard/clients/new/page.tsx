@@ -76,7 +76,7 @@ export default function NewClientPage() {
     handleQuestionnaireChange('brand_personality', updated);
   };
 
-  const handleArrayFieldChange = (field: string, value: string) => {
+  const handleArrayFieldChange = (field: keyof BrandQuestionnaireData, value: string) => {
     const items = value.split(',').map(item => item.trim()).filter(item => item.length > 0);
     handleQuestionnaireChange(field, items);
   };
