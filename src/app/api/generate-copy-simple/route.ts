@@ -204,6 +204,27 @@ PRODUCT INTRODUCTION RULES:
 
 EVERY BLOCK TEST: Ask "Why is this here? What job does it do in converting the reader?"
 
+COLLECTION BLOCK STRATEGY - Use for maximum visual impact and choice:
+🎯 PERFECT FOR: Welcome emails (#1-2), holiday promotions, category showcases, seasonal launches
+🎯 HIGH-CONVERTING SCENARIOS:
+- Welcome Email 1: "EXPLORE OUR WORLD" → 2x2 grid of main product categories
+- Holiday/Sale Email: "CYBER WEEK DEALS" → 3x1 row of bestsellers with sale prices
+- New Collection Launch: "SPRING COLLECTION" → 2x3 grid showcasing variety
+- Browse Abandonment: "MORE LIKE WHAT YOU VIEWED" → Carousel of similar products
+
+COLLECTION LAYOUT GUIDANCE:
+- "grid-2x2": Best for 4 main categories/featured products (welcome emails)
+- "grid-3x1": Perfect for 3 bestsellers or sale items (horizontal scroll)
+- "grid-2x3": Great for extensive product variety (6 items, seasonal collections)
+- "carousel": Ideal for "more like this" or extensive product browsing
+
+COLLECTION CONVERSION TACTICS:
+- Lead with benefit-focused collection titles ("GEAR FOR YOUR NEXT ADVENTURE" not "Products")
+- Each product should solve a specific customer need
+- Use action-oriented CTAs ("START YOUR JOURNEY" vs "Shop Now")
+- Include collection-wide CTA for users who want to explore more
+- Position early in email for maximum visual impact (blocks 2-4)
+
 FOR SPORTS/OUTDOOR BRANDS INCLUDE:
 - Product benefits (based on provided context only)
 - Performance themes (without specific claims unless provided)
@@ -227,6 +248,7 @@ BLOCK TYPES TO USE:
 - "pic": Image placeholders with specific instructions (e.g., "Ask Timmy for race photos")
 - "cta": Call-to-action buttons with link URLs  
 - "product": Product spotlight blocks with title, description, CTA text, and link
+- "collection": High-converting multi-product showcases (perfect for welcome emails, holiday promotions, or category spotlights)
 
 OUTPUT FORMAT - Respond with ONLY valid JSON (no backticks, no markdown):
 {
@@ -264,6 +286,30 @@ OUTPUT FORMAT - Respond with ONLY valid JSON (no backticks, no markdown):
       "description": "Product description and benefits...",
       "cta": "SHOP PRODUCT",
       "link": "https://brand-website.com/product-url"
+    },
+    {
+      "type": "collection",
+      "content": "FEATURED COLLECTIONS",
+      "description": "Discover our most popular product categories",
+      "layout": "grid-2x2",
+      "products": [
+        {
+          "title": "Trail Running",
+          "description": "Gear built for the trails",
+          "image_instruction": "Ask [contact] for trail running collection hero image",
+          "cta": "SHOP TRAIL",
+          "link": "https://brand-website.com/collections/trail-running"
+        },
+        {
+          "title": "Road Running",
+          "description": "Performance for every mile",
+          "image_instruction": "Ask [contact] for road running collection image",
+          "cta": "SHOP ROAD",
+          "link": "https://brand-website.com/collections/road-running"
+        }
+      ],
+      "cta": "VIEW ALL COLLECTIONS",
+      "link": "https://brand-website.com/collections"
     }
   ]
 }

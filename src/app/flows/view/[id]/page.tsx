@@ -6,11 +6,20 @@ import Link from 'next/link';
 import { ExternalLink, Download, ArrowLeft, Eye, Edit } from 'lucide-react';
 
 interface EmailBlock {
-  type: 'header' | 'subheader' | 'body' | 'pic' | 'cta' | 'product';
+  type: 'header' | 'subheader' | 'body' | 'pic' | 'cta' | 'product' | 'collection';
   content: string;
   description?: string;
   cta?: string;
   link?: string;
+  // Collection-specific properties
+  layout?: 'grid-2x2' | 'grid-3x1' | 'grid-2x3' | 'carousel';
+  products?: {
+    title: string;
+    description: string;
+    image_instruction: string;
+    cta: string;
+    link: string;
+  }[];
 }
 
 interface FlowEmail {

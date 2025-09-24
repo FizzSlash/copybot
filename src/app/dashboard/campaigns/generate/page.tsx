@@ -32,12 +32,21 @@ interface GenerationRequest {
 }
 
 interface EmailBlock {
-  type: 'header' | 'subheader' | 'body' | 'pic' | 'cta' | 'product';
+  type: 'header' | 'subheader' | 'body' | 'pic' | 'cta' | 'product' | 'collection';
   content: string;
   title?: string;
   description?: string;
   link?: string;
   cta?: string;
+  // Collection-specific properties
+  layout?: 'grid-2x2' | 'grid-3x1' | 'grid-2x3' | 'carousel';
+  products?: {
+    title: string;
+    description: string;
+    image_instruction: string;
+    cta: string;
+    link: string;
+  }[];
 }
 
 interface GeneratedCopy {
@@ -804,6 +813,7 @@ function GenerateAirtableCopyPageContent() {
                                   <option value="pic">PIC</option>
                                   <option value="cta">CTA</option>
                                   <option value="product">PRODUCT</option>
+                                  <option value="collection">COLLECTION</option>
                                 </select>
                               </div>
                               <button
@@ -902,6 +912,196 @@ function GenerateAirtableCopyPageContent() {
                                     }}
                                     className="w-full px-2 py-1 text-xs text-gray-500 bg-transparent border-0 focus:ring-0"
                                   />
+                                </div>
+                              ) : block.type === 'collection' ? (
+                                <div className="space-y-4">
+                                  <div>
+                                    <input
+                                      type="text"
+                                      placeholder="Collection title..."
+                                      value={block.content || ''}
+                                      onChange={(e) => {
+                                        const newBlocks = [...editedCopy.email_blocks];
+                                        newBlocks[index] = { ...block, content: e.target.value };
+                                        setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                      }}
+                                      className="w-full px-2 py-1 text-sm font-semibold bg-transparent border-0 border-b border-dark-700/50 focus:ring-0 focus:border-blue-500"
+                                    />
+                                    <textarea
+                                      placeholder="Collection description..."
+                                      value={block.description || ''}
+                                      onChange={(e) => {
+                                        const newBlocks = [...editedCopy.email_blocks];
+                                        newBlocks[index] = { ...block, description: e.target.value };
+                                        setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                      }}
+                                      rows={2}
+                                      className="w-full px-2 py-1 border-0 text-sm bg-transparent resize-none focus:ring-0 mt-2"
+                                    />
+                                  </div>
+                                  
+                                  <div>
+                                    <label className="text-xs text-gray-400 mb-2 block">Layout:</label>
+                                    <select
+                                      value={block.layout || 'grid-2x2'}
+                                      onChange={(e) => {
+                                        const newBlocks = [...editedCopy.email_blocks];
+                                        newBlocks[index] = { ...block, layout: e.target.value as any };
+                                        setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                      }}
+                                      className="text-xs bg-dark-700 border border-dark-600 rounded px-2 py-1 text-white"
+                                    >
+                                      <option value="grid-2x2">2x2 Grid</option>
+                                      <option value="grid-3x1">3x1 Row</option>
+                                      <option value="grid-2x3">2x3 Grid</option>
+                                      <option value="carousel">Carousel</option>
+                                    </select>
+                                  </div>
+
+                                  <div>
+                                    <div className="flex items-center justify-between mb-2">
+                                      <label className="text-xs text-gray-400">Products ({(block.products || []).length}):</label>
+                                      <button
+                                        onClick={() => {
+                                          const newBlocks = [...editedCopy.email_blocks];
+                                          const currentProducts = block.products || [];
+                                          newBlocks[index] = { 
+                                            ...block, 
+                                            products: [...currentProducts, {
+                                              title: '',
+                                              description: '',
+                                              image_instruction: '',
+                                              cta: '',
+                                              link: ''
+                                            }]
+                                          };
+                                          setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                        }}
+                                        className="text-xs text-blue-400 hover:text-blue-300"
+                                      >
+                                        + Add Product
+                                      </button>
+                                    </div>
+                                    
+                                    <div className="space-y-3 max-h-64 overflow-y-auto">
+                                      {(block.products || []).map((product, productIndex) => (
+                                        <div key={productIndex} className="border border-dark-600 rounded p-3 space-y-2">
+                                          <div className="flex items-center justify-between">
+                                            <span className="text-xs text-gray-400">Product {productIndex + 1}</span>
+                                            <button
+                                              onClick={() => {
+                                                const newBlocks = [...editedCopy.email_blocks];
+                                                const currentProducts = block.products || [];
+                                                newBlocks[index] = { 
+                                                  ...block, 
+                                                  products: currentProducts.filter((_, i) => i !== productIndex)
+                                                };
+                                                setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                              }}
+                                              className="text-xs text-red-400 hover:text-red-300"
+                                            >
+                                              Remove
+                                            </button>
+                                          </div>
+                                          <input
+                                            type="text"
+                                            placeholder="Product name..."
+                                            value={product.title}
+                                            onChange={(e) => {
+                                              const newBlocks = [...editedCopy.email_blocks];
+                                              const currentProducts = [...(block.products || [])];
+                                              currentProducts[productIndex] = { ...product, title: e.target.value };
+                                              newBlocks[index] = { ...block, products: currentProducts };
+                                              setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                            }}
+                                            className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-white"
+                                          />
+                                          <textarea
+                                            placeholder="Product description..."
+                                            value={product.description}
+                                            onChange={(e) => {
+                                              const newBlocks = [...editedCopy.email_blocks];
+                                              const currentProducts = [...(block.products || [])];
+                                              currentProducts[productIndex] = { ...product, description: e.target.value };
+                                              newBlocks[index] = { ...block, products: currentProducts };
+                                              setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                            }}
+                                            rows={2}
+                                            className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-white resize-none"
+                                          />
+                                          <input
+                                            type="text"
+                                            placeholder="Image instructions..."
+                                            value={product.image_instruction}
+                                            onChange={(e) => {
+                                              const newBlocks = [...editedCopy.email_blocks];
+                                              const currentProducts = [...(block.products || [])];
+                                              currentProducts[productIndex] = { ...product, image_instruction: e.target.value };
+                                              newBlocks[index] = { ...block, products: currentProducts };
+                                              setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                            }}
+                                            className="w-full px-2 py-1 text-xs bg-amber-500/20 border border-amber-500/50 rounded text-amber-100"
+                                          />
+                                          <div className="grid grid-cols-2 gap-2">
+                                            <input
+                                              type="text"
+                                              placeholder="CTA text..."
+                                              value={product.cta}
+                                              onChange={(e) => {
+                                                const newBlocks = [...editedCopy.email_blocks];
+                                                const currentProducts = [...(block.products || [])];
+                                                currentProducts[productIndex] = { ...product, cta: e.target.value };
+                                                newBlocks[index] = { ...block, products: currentProducts };
+                                                setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                              }}
+                                              className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-blue-400"
+                                            />
+                                            <input
+                                              type="url"
+                                              placeholder="Product URL..."
+                                              value={product.link}
+                                              onChange={(e) => {
+                                                const newBlocks = [...editedCopy.email_blocks];
+                                                const currentProducts = [...(block.products || [])];
+                                                currentProducts[productIndex] = { ...product, link: e.target.value };
+                                                newBlocks[index] = { ...block, products: currentProducts };
+                                                setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                              }}
+                                              className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-gray-400"
+                                            />
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+
+                                  <div className="pt-2 border-t border-dark-700">
+                                    <label className="text-xs text-gray-400 mb-2 block">Collection CTA (optional):</label>
+                                    <div className="grid grid-cols-2 gap-2">
+                                      <input
+                                        type="text"
+                                        placeholder="Collection CTA text..."
+                                        value={block.cta || ''}
+                                        onChange={(e) => {
+                                          const newBlocks = [...editedCopy.email_blocks];
+                                          newBlocks[index] = { ...block, cta: e.target.value };
+                                          setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                        }}
+                                        className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-blue-400"
+                                      />
+                                      <input
+                                        type="url"
+                                        placeholder="Collection URL..."
+                                        value={block.link || ''}
+                                        onChange={(e) => {
+                                          const newBlocks = [...editedCopy.email_blocks];
+                                          newBlocks[index] = { ...block, link: e.target.value };
+                                          setEditedCopy(prev => prev ? { ...prev, email_blocks: newBlocks } : null);
+                                        }}
+                                        className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-gray-400"
+                                      />
+                                    </div>
+                                  </div>
                                 </div>
                               ) : (
                                 <textarea

@@ -955,6 +955,7 @@ export default function FlowBuilderPage() {
                               <option value="pic">PIC</option>
                               <option value="cta">CTA</option>
                               <option value="product">PRODUCT</option>
+                              <option value="collection">COLLECTION</option>
                             </select>
                           ) : (
                             block.type
