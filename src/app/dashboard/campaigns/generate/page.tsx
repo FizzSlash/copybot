@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Zap, Loader, Download, Share, Globe, Brain, FileText, CheckCircle, Edit3, Copy, Eye, Edit, GripVertical } from 'lucide-react';
@@ -146,7 +146,7 @@ function EmailPreview({ copy, selectedSubject, selectedPreview }: {
   );
 }
 
-export default function GenerateAirtableCopyPage() {
+function GenerateAirtableCopyPageContent() {
   const searchParams = useSearchParams();
   const [campaignContext, setCampaignContext] = useState<CampaignContext | null>(null);
   const [client, setClient] = useState<Client | null>(null);
@@ -1002,5 +1002,23 @@ export default function GenerateAirtableCopyPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Wrapper with Suspense boundary for useSearchParams
+export default function GenerateAirtableCopyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-dark-800 via-dark-900 to-purple-900/20">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading campaign generator...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <GenerateAirtableCopyPageContent />
+    </Suspense>
   );
 }
