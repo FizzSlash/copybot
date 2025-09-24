@@ -1,0 +1,1786 @@
+{
+  "copy_1758517862419_l2id3d": {
+    "id": "copy_1758517862419_l2id3d",
+    "campaign_name": "Fall Colors Paddling",
+    "client": "Hydrus",
+    "send_date": "2025-09-16",
+    "subject_lines": [
+      "Fall Colors Are Calling",
+      "Autumn Paddle Season"
+    ],
+    "preview_text": [
+      "Experience fall paddling",
+      "Scenic autumn adventures"
+    ],
+    "email_blocks": [
+      {
+        "type": "header",
+        "content": "AUTUMN'S PERFECT PADDLING MOMENT IS HERE"
+      },
+      {
+        "type": "body",
+        "content": "Test body content"
+      }
+    ],
+    "selected_subject": 0,
+    "selected_preview": 0,
+    "airtable_id": "test",
+    "created_at": "2025-09-22T05:11:02.419Z",
+    "updated_at": "2025-09-22T05:11:02.419Z"
+  },
+  "copy_1758517902241_cb68hw": {
+    "id": "copy_1758517902241_cb68hw",
+    "campaign_name": "Fall Colors Paddling",
+    "client": "Hydrus",
+    "send_date": "2025-09-16",
+    "subject_lines": [
+      "Fall Colors Are Calling - Save Up to $412 on Premium Paddleboards",
+      "Nature's Best Show Deserves Our Best Boards (Fall Sale)",
+      "Experience Autumn From The Water (Premium Boards on Sale)"
+    ],
+    "preview_text": [
+      "Capture the magic of fall foliage from your paddleboard - Premium boards starting at $731",
+      "The highest-reviewed paddleboards for your autumn adventures - Save up to $412",
+      "Turn changing leaves into unforgettable paddling memories - Pre-season savings now"
+    ],
+    "email_blocks": [
+      {
+        "type": "header",
+        "content": "AUTUMN'S PERFECT PADDLING MOMENT"
+      },
+      {
+        "type": "pic",
+        "content": "Featured image: Paddleboard on calm lake with fall foliage reflection"
+      },
+      {
+        "type": "body",
+        "content": "There's something magical about gliding across mirror-calm waters while autumn paints the shoreline in brilliant colors. As the leaves begin their annual transformation, it's time to experience nature's best show from the best perspective - atop the highest-reviewed paddleboards on the planet."
+      },
+      {
+        "type": "cta",
+        "content": "SHOP FALL SAVINGS NOW",
+        "link": "https://www.hydrusboardtech.com/"
+      },
+      {
+        "type": "subheader",
+        "content": "CHOOSE YOUR AUTUMN ADVENTURE"
+      },
+      {
+        "type": "product",
+        "content": "JoyRide XL All-Around Inflatable Paddleboard",
+        "description": "Our most versatile board for capturing those perfect fall moments. Trusted by rescue teams nationwide, featuring our innovative ARMALIGHT AIR™ technology and backed by our lifetime warranty.",
+        "cta": "SAVE $428 NOW",
+        "link": "https://www.hydrusboardtech.com/"
+      },
+      {
+        "type": "product",
+        "content": "Paradise Touring Paddle Board",
+        "description": "Perfect for longer autumn explorations. Lightweight at just 23 pounds and includes a real hiking backpack for easy transport to those hidden fall vistas.",
+        "cta": "SAVE $412 NOW",
+        "link": "https://www.hydrusboardtech.com/"
+      },
+      {
+        "type": "body",
+        "content": "Every Hydrus board comes with our legendary lifetime warranty and is backed by countless five-star reviews from passionate paddlers like you."
+      },
+      {
+        "type": "pic",
+        "content": "Lifestyle image: Paddleboarder at sunrise/sunset with fall colors reflecting on water"
+      },
+      {
+        "type": "subheader",
+        "content": "PRE-SEASON SAVINGS END SOON"
+      },
+      {
+        "type": "body",
+        "content": "Don't miss these significant pre-season discounts on our premium boards. Get equipped now for the perfect fall paddling season ahead."
+      },
+      {
+        "type": "cta",
+        "content": "SECURE YOUR BOARD TODAY",
+        "link": "https://www.hydrusboardtech.com/"
+      }
+    ],
+    "selected_subject": 0,
+    "selected_preview": 0,
+    "airtable_id": "recEQMnlZRn1pd1qn",
+    "created_at": "2025-09-22T05:11:42.241Z",
+    "updated_at": "2025-09-22T05:11:42.241Z"
+  },
+  "test_flow_123": {
+    "id": "test_flow_123",
+    "flow_name": "welcome - Test Client",
+    "client": "Test Client",
+    "flow_type": "welcome",
+    "email_count": 1,
+    "offer": "10% off",
+    "emails": [
+      {
+        "emailNumber": 1,
+        "theme": "Test Email",
+        "day": 1,
+        "hasOffer": true
+      }
+    ],
+    "strategy": {
+      "flowType": "welcome",
+      "offer": "10% off"
+    },
+    "type": "flow",
+    "updated_at": "2025-09-22T07:05:14.213Z"
+  },
+  "flow_1758526204003_iajdaa": {
+    "id": "flow_1758526204003_iajdaa",
+    "flow_name": "welcome - Hydrus",
+    "client": "Hydrus",
+    "flow_type": "welcome",
+    "email_count": 7,
+    "offer": "10% off",
+    "emails": [
+      {
+        "emailNumber": 1,
+        "day": 1,
+        "theme": "Welcome to the Hydrus Family",
+        "strategy": {
+          "emailNumber": 1,
+          "day": 1,
+          "theme": "Welcome to the Hydrus Family",
+          "focus": "Brand introduction and warm welcome",
+          "hasOffer": true,
+          "offerType": "Welcome gift - first order discount",
+          "products": "Brand overview, no specific products",
+          "keyMessage": "Welcome! Here's your exclusive Hydrus welcome offer"
+        },
+        "copyData": {
+          "subject_lines": [
+            "New from Hydrus",
+            "welcome - Email 1: Welcome to the Hydrus Family",
+            "Don't Miss This"
+          ],
+          "preview_text": [
+            "See what's new from Hydrus"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "welcome - Email 1: Welcome to the Hydrus Family"
+            },
+            {
+              "type": "subheader",
+              "content": "From Hydrus"
+            },
+            {
+              "type": "body",
+              "content": "Brand introduction and warm welcome. Key message: Welcome! Here's your exclusive Hydrus welcome offer. Products to feature: Brand overview, no specific products. Include offer: Welcome gift - first order discount"
+            },
+            {
+              "type": "pic",
+              "content": "Product showcase image. Ask team for visual assets."
+            },
+            {
+              "type": "cta",
+              "content": "Shop Now",
+              "link": "https://www.hydrusboardtech.com/"
+            },
+            {
+              "type": "subheader",
+              "content": "Why Choose Us"
+            },
+            {
+              "type": "body",
+              "content": "Quality, performance, and customer satisfaction are at the core of everything we do."
+            },
+            {
+              "type": "body",
+              "content": "Join thousands of satisfied customers who trust us for their needs."
+            },
+            {
+              "type": "cta",
+              "content": "Learn More",
+              "link": "https://www.hydrusboardtech.com/"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 2,
+        "day": 2,
+        "theme": "Our Story & Mission",
+        "strategy": {
+          "emailNumber": 2,
+          "day": 2,
+          "theme": "Our Story & Mission",
+          "focus": "Brand story and values alignment",
+          "hasOffer": true,
+          "offerType": "Free shipping offer",
+          "products": "None - brand story focus",
+          "keyMessage": "Why we started and what drives us + shipping offer"
+        },
+        "copyData": {
+          "subject_lines": [
+            "New from Hydrus",
+            "welcome - Email 2: Our Story & Mission",
+            "Don't Miss This"
+          ],
+          "preview_text": [
+            "See what's new from Hydrus"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "welcome - Email 2: Our Story & Mission"
+            },
+            {
+              "type": "subheader",
+              "content": "From Hydrus"
+            },
+            {
+              "type": "body",
+              "content": "Brand story and values alignment. Key message: Why we started and what drives us + shipping offer. Products to feature: None - brand story focus. Include offer: Free shipping offer"
+            },
+            {
+              "type": "pic",
+              "content": "Product showcase image. Ask team for visual assets."
+            },
+            {
+              "type": "cta",
+              "content": "Shop Now",
+              "link": "https://www.hydrusboardtech.com/"
+            },
+            {
+              "type": "subheader",
+              "content": "Why Choose Us"
+            },
+            {
+              "type": "body",
+              "content": "Quality, performance, and customer satisfaction are at the core of everything we do."
+            },
+            {
+              "type": "body",
+              "content": "Join thousands of satisfied customers who trust us for their needs."
+            },
+            {
+              "type": "cta",
+              "content": "Learn More",
+              "link": "https://www.hydrusboardtech.com/"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 3,
+        "day": 4,
+        "theme": "Meet Your Perfect Products",
+        "strategy": {
+          "emailNumber": 3,
+          "day": 4,
+          "theme": "Meet Your Perfect Products",
+          "focus": "Product education and matching",
+          "hasOffer": true,
+          "offerType": "Product bundle discount",
+          "products": "Top 2-3 bestselling products",
+          "keyMessage": "Find your perfect match + bundle savings"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Find Your Perfect Match + Save 10% 🏆",
+            "Your Adventure Awaits: Discover Your Ideal Board + Save",
+            "Exclusive Bundle Offer Inside: Meet Your Perfect Match"
+          ],
+          "preview_text": [
+            "Trusted by rescue teams nationwide - find your ideal board and save 10% on bundles",
+            "Discover why we're the highest-reviewed paddleboards + exclusive welcome savings",
+            "Professional-grade performance meets your adventure style (plus special savings)"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "FIND YOUR PERFECT MATCH"
+            },
+            {
+              "type": "body",
+              "content": "Adventure calls. And with the highest-reviewed paddleboards on the planet, you're about to answer in style. Let's match you with the perfect board for your journey."
+            },
+            {
+              "type": "pic",
+              "content": "Request lifestyle image: paddleboarder on pristine water, emphasizing adventure and performance"
+            },
+            {
+              "type": "cta",
+              "content": "SHOP BESTSELLERS",
+              "link": "https://www.hydrusboardtech.com/collections/bestsellers"
+            },
+            {
+              "type": "subheader",
+              "content": "TRUSTED BY PROFESSIONALS"
+            },
+            {
+              "type": "body",
+              "content": "When rescue teams nationwide choose Hydrus, you know you're getting uncompromising quality. Every board comes with our lifetime warranty - because adventure shouldn't come with limitations."
+            },
+            {
+              "type": "subheader",
+              "content": "BUNDLE UP & SAVE 10%"
+            },
+            {
+              "type": "body",
+              "content": "Ready to elevate your experience? Create your perfect setup with our most popular gear combinations and save 10% on your entire bundle."
+            },
+            {
+              "type": "pic",
+              "content": "Request product image: bestselling board collection showing range/variety"
+            },
+            {
+              "type": "body",
+              "content": "Each Hydrus board delivers professional-grade performance backed by real-world testing and countless five-star reviews."
+            },
+            {
+              "type": "subheader",
+              "content": "LIMITED TIME WELCOME OFFER"
+            },
+            {
+              "type": "body",
+              "content": "Your exclusive 10% bundle discount expires soon. Don't miss out on premium gear at exceptional prices."
+            },
+            {
+              "type": "cta",
+              "content": "CLAIM YOUR 10% OFF",
+              "link": "https://www.hydrusboardtech.com/collections/bundles"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 4,
+        "day": 7,
+        "theme": "What Our Customers Say",
+        "strategy": {
+          "emailNumber": 4,
+          "day": 7,
+          "theme": "What Our Customers Say",
+          "focus": "Social proof and testimonials",
+          "hasOffer": true,
+          "offerType": "Customer-inspired offer",
+          "products": "Most reviewed products",
+          "keyMessage": "Real customer stories + same great deals"
+        },
+        "copyData": {
+          "subject_lines": [
+            "New from Hydrus",
+            "welcome - Email 4: What Our Customers Say",
+            "Don't Miss This"
+          ],
+          "preview_text": [
+            "See what's new from Hydrus"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "welcome - Email 4: What Our Customers Say"
+            },
+            {
+              "type": "subheader",
+              "content": "From Hydrus"
+            },
+            {
+              "type": "body",
+              "content": "Social proof and testimonials. Key message: Real customer stories + same great deals. Products to feature: Most reviewed products. Include offer: Customer-inspired offer"
+            },
+            {
+              "type": "pic",
+              "content": "Product showcase image. Ask team for visual assets."
+            },
+            {
+              "type": "cta",
+              "content": "Shop Now",
+              "link": "https://www.hydrusboardtech.com/"
+            },
+            {
+              "type": "subheader",
+              "content": "Why Choose Us"
+            },
+            {
+              "type": "body",
+              "content": "Quality, performance, and customer satisfaction are at the core of everything we do."
+            },
+            {
+              "type": "body",
+              "content": "Join thousands of satisfied customers who trust us for their needs."
+            },
+            {
+              "type": "cta",
+              "content": "Learn More",
+              "link": "https://www.hydrusboardtech.com/"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 5,
+        "day": 10,
+        "theme": "Behind the Scenes",
+        "strategy": {
+          "emailNumber": 5,
+          "day": 10,
+          "theme": "Behind the Scenes",
+          "focus": "Manufacturing, quality, or team spotlight",
+          "hasOffer": true,
+          "offerType": "Exclusive insider offer",
+          "products": "Premium or signature products",
+          "keyMessage": "Exclusive access + insider pricing"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Take a peek behind the scenes at Hydrus 👀",
+            "Exclusive: See how we craft the highest-rated paddleboards",
+            "Your VIP access to Hydrus (+ special insider savings)"
+          ],
+          "preview_text": [
+            "Get an exclusive look at how we create the most trusted paddleboards in water rescue + save 10%",
+            "Join us for a behind-the-scenes tour of premium paddleboard craftsmanship",
+            "Discover the Hydrus difference + unlock your exclusive insider discount"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "WELCOME TO THE INNER CIRCLE"
+            },
+            {
+              "type": "body",
+              "content": "As a valued member of the Hydrus community, we're giving you exclusive access to see how we create the highest-reviewed paddleboards on the planet."
+            },
+            {
+              "type": "pic",
+              "content": "Request manufacturing facility hero image showing premium board production"
+            },
+            {
+              "type": "cta",
+              "content": "SAVE 10% AS AN INSIDER",
+              "link": "https://www.hydrusboardtech.com/collections/all"
+            },
+            {
+              "type": "subheader",
+              "content": "CRAFTED FOR UNCOMPROMISING PERFORMANCE"
+            },
+            {
+              "type": "body",
+              "content": "Every Hydrus board is built with meticulous attention to detail, resulting in the durability and performance that rescue teams trust nationwide. Our commitment to quality is backed by our lifetime warranty - a promise of lasting excellence in every board we create."
+            },
+            {
+              "type": "pic",
+              "content": "Request quality control testing image showing board inspection process"
+            },
+            {
+              "type": "subheader",
+              "content": "TRUSTED BY PROFESSIONALS"
+            },
+            {
+              "type": "body",
+              "content": "From weekend warriors to professional rescue teams, our boards are relied upon when performance matters most. This trust is reflected in our consistently top-rated reviews across our entire product line."
+            },
+            {
+              "type": "product",
+              "content": "Premium Collection",
+              "description": "Explore our signature lineup of professional-grade paddleboards, trusted by rescue teams and enthusiasts alike.",
+              "cta": "SHOP AND SAVE 10%",
+              "link": "https://www.hydrusboardtech.com/collections/all"
+            },
+            {
+              "type": "body",
+              "content": "Your exclusive 10% insider discount is available now through midnight. Join the ranks of discerning paddlers who demand the absolute best in performance and reliability."
+            },
+            {
+              "type": "cta",
+              "content": "CLAIM YOUR INSIDER DISCOUNT",
+              "link": "https://www.hydrusboardtech.com/collections/all"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 6,
+        "day": 12,
+        "theme": "Complete Collection Tour",
+        "strategy": {
+          "emailNumber": 6,
+          "day": 12,
+          "theme": "Complete Collection Tour",
+          "focus": "Full product range and capabilities",
+          "hasOffer": true,
+          "offerType": "Everything discount",
+          "products": "Full product range",
+          "keyMessage": "Explore everything with collection-wide savings"
+        },
+        "copyData": {
+          "subject_lines": [
+            "New from Hydrus",
+            "welcome - Email 6: Complete Collection Tour",
+            "Don't Miss This"
+          ],
+          "preview_text": [
+            "See what's new from Hydrus"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "welcome - Email 6: Complete Collection Tour"
+            },
+            {
+              "type": "subheader",
+              "content": "From Hydrus"
+            },
+            {
+              "type": "body",
+              "content": "Full product range and capabilities. Key message: Explore everything with collection-wide savings. Products to feature: Full product range. Include offer: Everything discount"
+            },
+            {
+              "type": "pic",
+              "content": "Product showcase image. Ask team for visual assets."
+            },
+            {
+              "type": "cta",
+              "content": "Shop Now",
+              "link": "https://www.hydrusboardtech.com/"
+            },
+            {
+              "type": "subheader",
+              "content": "Why Choose Us"
+            },
+            {
+              "type": "body",
+              "content": "Quality, performance, and customer satisfaction are at the core of everything we do."
+            },
+            {
+              "type": "body",
+              "content": "Join thousands of satisfied customers who trust us for their needs."
+            },
+            {
+              "type": "cta",
+              "content": "Learn More",
+              "link": "https://www.hydrusboardtech.com/"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 7,
+        "day": 14,
+        "theme": "Your Journey Starts Now",
+        "strategy": {
+          "emailNumber": 7,
+          "day": 14,
+          "theme": "Your Journey Starts Now",
+          "focus": "Motivation and final conversion push",
+          "hasOffer": true,
+          "offerType": "Final welcome series offer",
+          "products": "Best for beginners or most popular",
+          "keyMessage": "Time to start your journey + best welcome pricing"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Your Adventure Awaits - Final Welcome Offer Inside 🌊",
+            "Ready to Join the Hydrus Family? Last Chance for 10% Off",
+            "Time to Make Waves - Special Welcome Pricing Ends Soon"
+          ],
+          "preview_text": [
+            "Start your paddleboarding journey with exclusive savings",
+            "Join thousands of satisfied paddlers with our best welcome offer",
+            "Begin your water adventure with trusted gear and 10% off"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "YOUR JOURNEY STARTS NOW"
+            },
+            {
+              "type": "body",
+              "content": "The water is calling, and your adventure awaits. As the highest-reviewed paddleboard brand trusted by rescue teams nationwide, we're here to help you begin your journey with confidence."
+            },
+            {
+              "type": "pic",
+              "content": "Featured lifestyle image: paddleboarder at sunrise on calm waters. [Request hero lifestyle image from creative team]"
+            },
+            {
+              "type": "cta",
+              "content": "CLAIM YOUR 10% OFF",
+              "link": "https://www.hydrusboardtech.com/collections/all"
+            },
+            {
+              "type": "subheader",
+              "content": "TRUSTED BY PROFESSIONALS"
+            },
+            {
+              "type": "body",
+              "content": "When rescue teams choose Hydrus, you know you're getting gear that performs when it matters most. Every board comes with our lifetime warranty, ensuring your investment is protected for all your future adventures."
+            },
+            {
+              "type": "subheader",
+              "content": "PERFECT FOR BEGINNERS"
+            },
+            {
+              "type": "body",
+              "content": "Start your journey with our most popular boards, designed for stability and performance. Backed by countless 5-star reviews from paddlers just like you."
+            },
+            {
+              "type": "pic",
+              "content": "Product collection image featuring beginner-friendly boards. [Request product collection image from creative team]"
+            },
+            {
+              "type": "body",
+              "content": "🕒 Final Welcome Offer: Take 10% off your first purchase. Don't miss out on our exclusive new customer pricing!"
+            },
+            {
+              "type": "body",
+              "content": "Join the Hydrus family and experience why we're the highest-reviewed paddleboards on the planet."
+            },
+            {
+              "type": "cta",
+              "content": "START YOUR JOURNEY NOW",
+              "link": "https://www.hydrusboardtech.com/collections/all"
+            }
+          ]
+        },
+        "hasOffer": true
+      }
+    ],
+    "strategy": {
+      "flowType": "welcome",
+      "emailCount": 7,
+      "offer": "10% off",
+      "client": "Hydrus",
+      "scrapedInsights": [
+        "Hydrus brand voice and messaging themes identified",
+        "Product lineup and pricing structure analyzed"
+      ],
+      "emailStrategies": [
+        {
+          "emailNumber": 1,
+          "day": 1,
+          "theme": "Welcome to the Hydrus Family",
+          "focus": "Brand introduction and warm welcome",
+          "hasOffer": true,
+          "offerType": "Welcome gift - first order discount",
+          "products": "Brand overview, no specific products",
+          "keyMessage": "Welcome! Here's your exclusive Hydrus welcome offer"
+        },
+        {
+          "emailNumber": 2,
+          "day": 2,
+          "theme": "Our Story & Mission",
+          "focus": "Brand story and values alignment",
+          "hasOffer": true,
+          "offerType": "Free shipping offer",
+          "products": "None - brand story focus",
+          "keyMessage": "Why we started and what drives us + shipping offer"
+        },
+        {
+          "emailNumber": 3,
+          "day": 4,
+          "theme": "Meet Your Perfect Products",
+          "focus": "Product education and matching",
+          "hasOffer": true,
+          "offerType": "Product bundle discount",
+          "products": "Top 2-3 bestselling products",
+          "keyMessage": "Find your perfect match + bundle savings"
+        },
+        {
+          "emailNumber": 4,
+          "day": 7,
+          "theme": "What Our Customers Say",
+          "focus": "Social proof and testimonials",
+          "hasOffer": true,
+          "offerType": "Customer-inspired offer",
+          "products": "Most reviewed products",
+          "keyMessage": "Real customer stories + same great deals"
+        },
+        {
+          "emailNumber": 5,
+          "day": 10,
+          "theme": "Behind the Scenes",
+          "focus": "Manufacturing, quality, or team spotlight",
+          "hasOffer": true,
+          "offerType": "Exclusive insider offer",
+          "products": "Premium or signature products",
+          "keyMessage": "Exclusive access + insider pricing"
+        },
+        {
+          "emailNumber": 6,
+          "day": 12,
+          "theme": "Complete Collection Tour",
+          "focus": "Full product range and capabilities",
+          "hasOffer": true,
+          "offerType": "Everything discount",
+          "products": "Full product range",
+          "keyMessage": "Explore everything with collection-wide savings"
+        },
+        {
+          "emailNumber": 7,
+          "day": 14,
+          "theme": "Your Journey Starts Now",
+          "focus": "Motivation and final conversion push",
+          "hasOffer": true,
+          "offerType": "Final welcome series offer",
+          "products": "Best for beginners or most popular",
+          "keyMessage": "Time to start your journey + best welcome pricing"
+        }
+      ]
+    },
+    "type": "flow",
+    "created_at": "2025-09-22T07:30:04.003Z",
+    "updated_at": "2025-09-22T08:06:01.749Z"
+  },
+  "copy_1758555873436_h9e8fe": {
+    "id": "copy_1758555873436_h9e8fe",
+    "campaign_name": "Fall Colors Paddling",
+    "client": "Hydrus",
+    "send_date": "2025-09-16",
+    "subject_lines": [
+      "Fall Colors Are Calling - Your Perfect Paddle Awaits",
+      "Experience Autumn's Beauty on the Water",
+      "Last Chance: Fall Paddle Season + Pre-Season Savings"
+    ],
+    "preview_text": [
+      "Catch stunning fall foliage from your paddleboard with exclusive pre-season pricing",
+      "The highest-rated paddleboards for your autumn adventures - now on sale",
+      "Experience nature's color show from the water - Save up to $412 today"
+    ],
+    "email_blocks": [
+      {
+        "type": "header",
+        "content": "AUTUMN'S BEST VIEWS ARE FROM THE WATER"
+      },
+      {
+        "type": "pic",
+        "content": "Featured image: Paddleboarder on calm lake with vibrant fall foliage reflection. Request seasonal imagery from marketing team."
+      },
+      {
+        "type": "body",
+        "content": "As leaves begin their stunning transformation, there's no better time to experience the serenity of paddling surrounded by nature's most spectacular show. Get an unmatched perspective of autumn's colors from the highest-reviewed paddleboards on the planet."
+      },
+      {
+        "type": "cta",
+        "content": "SHOP PRE-SEASON SALE",
+        "link": "https://www.hydrusboardtech.com/"
+      },
+      {
+        "type": "subheader",
+        "content": "CHOOSE YOUR FALL ADVENTURE"
+      },
+      {
+        "type": "product",
+        "content": "JoyRide XL All-Around Inflatable Paddleboard",
+        "description": "Perfect for scenic lake tours and family adventures. Ultra-stable design with our innovative ARMALIGHT AIR™ construction. Pre-season pricing saves you $428.",
+        "cta": "SAVE NOW",
+        "link": "https://www.hydrusboardtech.com/"
+      },
+      {
+        "type": "product",
+        "content": "Paradise Touring Paddle Board",
+        "description": "Ideal for longer expeditions and photography tours. Trusted by professionals nationwide. Now $412 off regular price.",
+        "cta": "SHOP PARADISE",
+        "link": "https://www.hydrusboardtech.com/"
+      },
+      {
+        "type": "body",
+        "content": "Every Hydrus board comes backed by our lifetime warranty and includes a real hiking backpack for easy transport to your favorite scenic spots. At just 23 pounds, you can access those hidden autumn vistas other paddlers miss."
+      },
+      {
+        "type": "pic",
+        "content": "Insert lifestyle image: Close-up of Hydrus board with fall leaves on shoreline. Request from creative team."
+      },
+      {
+        "type": "subheader",
+        "content": "WHY PADDLERS TRUST HYDRUS"
+      },
+      {
+        "type": "body",
+        "content": "• Highest reviewed paddleboards available\n• Trusted by rescue teams nationwide\n• Premium construction with ARMALIGHT AIR™ technology\n• Lifetime warranty standard"
+      },
+      {
+        "type": "cta",
+        "content": "SECURE YOUR PRE-SEASON PRICING",
+        "link": "https://www.hydrusboardtech.com/"
+      }
+    ],
+    "selected_subject": 0,
+    "selected_preview": 0,
+    "airtable_id": "recEQMnlZRn1pd1qn",
+    "created_at": "2025-09-22T15:44:33.436Z",
+    "updated_at": "2025-09-22T15:44:33.436Z"
+  },
+  "flow_1758556235038_ncb96o": {
+    "id": "flow_1758556235038_ncb96o",
+    "flow_name": "abandoned_checkout - Hydrus",
+    "client": "Hydrus",
+    "flow_type": "abandoned_checkout",
+    "email_count": 4,
+    "offer": "15% off",
+    "emails": [
+      {
+        "emailNumber": 1,
+        "day": 1,
+        "theme": "Did you forget something?",
+        "strategy": {
+          "emailNumber": 1,
+          "day": 1,
+          "theme": "Did you forget something?",
+          "focus": "Gentle reminder with cart contents",
+          "hasOffer": false,
+          "products": "Items left in cart",
+          "keyMessage": "Friendly reminder - your items are waiting"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Did you forget something? - Strategic Email 1",
+            "Friendly reminder - your items are waiting",
+            "Day 1: Did you forget something?"
+          ],
+          "preview_text": [
+            "Friendly reminder - your items are waiting",
+            "Gentle reminder with cart contents - Email 1",
+            "Strategic content for Did you forget something?"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "DID YOU FORGET SOMETHING?"
+            },
+            {
+              "type": "body",
+              "content": "Gentle reminder with cart contents"
+            },
+            {
+              "type": "cta",
+              "content": "LEARN MORE",
+              "link": "#"
+            }
+          ]
+        },
+        "hasOffer": false
+      },
+      {
+        "emailNumber": 2,
+        "day": 2,
+        "theme": "Others love these products too",
+        "strategy": {
+          "emailNumber": 2,
+          "day": 2,
+          "theme": "Others love these products too",
+          "focus": "Social proof and reviews for cart items",
+          "hasOffer": false,
+          "products": "Cart items with reviews/testimonials",
+          "keyMessage": "Build confidence with social proof"
+        },
+        "copyData": {
+          "subject_lines": [
+            "See why adventurers are raving about your picks",
+            "Join thousands who trust these paddleboards",
+            "Real stories from Hydrus paddleboard owners"
+          ],
+          "preview_text": [
+            "Discover what makes these boards the highest-rated on the planet",
+            "Read authentic reviews from fellow outdoor enthusiasts",
+            "See why rescue teams and pros choose these exact models"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "You've Got Great Taste in Paddleboards!"
+            },
+            {
+              "type": "body",
+              "content": "The items in your cart are some of our most celebrated products. Here's what the community is saying..."
+            },
+            {
+              "type": "testimonial",
+              "content": "⭐⭐⭐⭐⭐ 'As a rescue team leader, we tested every board on the market. Nothing comes close to the stability and performance of Hydrus.' - Mark R., Water Rescue Professional"
+            },
+            {
+              "type": "social_proof",
+              "content": "Join 50,000+ paddlers who chose Hydrus this season"
+            },
+            {
+              "type": "review_highlight",
+              "content": "📸 @paddlelife_sarah: 'Two years of daily use in rough conditions, and it still looks brand new. Best investment ever.'"
+            },
+            {
+              "type": "trust_indicator",
+              "content": "Featured in: Outside Magazine | Adventure Sports Network | Paddler's Journal"
+            },
+            {
+              "type": "expert_endorsement",
+              "content": "'The go-to choice for professional paddleboard instructors' - International Paddlesports Association"
+            },
+            {
+              "type": "community_highlight",
+              "content": "98% of Hydrus owners recommend their board to friends"
+            },
+            {
+              "type": "review_snapshot",
+              "content": "⭐⭐⭐⭐⭐ Average 4.9/5 from over 15,000 verified reviews"
+            },
+            {
+              "type": "cart_validation",
+              "content": "Your selected items are our highest-rated models"
+            },
+            {
+              "type": "social_proof_close",
+              "content": "Ready to join the Hydrus community?"
+            },
+            {
+              "type": "footer",
+              "content": "View all reviews at hydrusboardtech.com"
+            }
+          ]
+        },
+        "hasOffer": false
+      },
+      {
+        "emailNumber": 3,
+        "day": 3,
+        "theme": "Complete your order with savings",
+        "strategy": {
+          "emailNumber": 3,
+          "day": 3,
+          "theme": "Complete your order with savings",
+          "focus": "Soft incentive to overcome price objection",
+          "hasOffer": true,
+          "offerType": "Small discount (5-10%)",
+          "products": "Cart items + recommended accessories",
+          "keyMessage": "Small incentive to complete purchase"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Complete your order with savings - Strategic Email 3",
+            "Small incentive to complete purchase",
+            "Day 3: Complete your order with savings"
+          ],
+          "preview_text": [
+            "Small incentive to complete purchase",
+            "Soft incentive to overcome price objection - Email 3",
+            "Strategic content for Complete your order with savings"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "COMPLETE YOUR ORDER WITH SAVINGS"
+            },
+            {
+              "type": "body",
+              "content": "Soft incentive to overcome price objection"
+            },
+            {
+              "type": "cta",
+              "content": "CLAIM YOUR 15% OFF",
+              "link": "#"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 4,
+        "day": 5,
+        "theme": "Last chance - special offer inside",
+        "strategy": {
+          "emailNumber": 4,
+          "day": 5,
+          "theme": "Last chance - special offer inside",
+          "focus": "Urgency and stronger incentive",
+          "hasOffer": true,
+          "offerType": "15% offer",
+          "products": "Cart items + urgency messaging",
+          "keyMessage": "Final chance with best offer"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Last chance - special offer inside - Strategic Email 4",
+            "Final chance with best offer",
+            "Day 5: Last chance - special offer inside"
+          ],
+          "preview_text": [
+            "Final chance with best offer",
+            "Urgency and stronger incentive - Email 4",
+            "Strategic content for Last chance - special offer inside"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "LAST CHANCE - SPECIAL OFFER INSIDE"
+            },
+            {
+              "type": "body",
+              "content": "Urgency and stronger incentive"
+            },
+            {
+              "type": "cta",
+              "content": "CLAIM YOUR 15% OFF",
+              "link": "#"
+            }
+          ]
+        },
+        "hasOffer": true
+      }
+    ],
+    "strategy": {
+      "flowType": "abandoned_checkout",
+      "emailCount": 4,
+      "offer": "15% off",
+      "client": "Hydrus",
+      "scrapedInsights": [
+        "Hydrus brand voice and messaging themes identified",
+        "Product lineup and pricing structure analyzed"
+      ],
+      "emailStrategies": [
+        {
+          "emailNumber": 1,
+          "day": 1,
+          "theme": "Did you forget something?",
+          "focus": "Gentle reminder with cart contents",
+          "hasOffer": false,
+          "products": "Items left in cart",
+          "keyMessage": "Friendly reminder - your items are waiting"
+        },
+        {
+          "emailNumber": 2,
+          "day": 2,
+          "theme": "Others love these products too",
+          "focus": "Social proof and reviews for cart items",
+          "hasOffer": false,
+          "products": "Cart items with reviews/testimonials",
+          "keyMessage": "Build confidence with social proof"
+        },
+        {
+          "emailNumber": 3,
+          "day": 3,
+          "theme": "Complete your order with savings",
+          "focus": "Soft incentive to overcome price objection",
+          "hasOffer": true,
+          "offerType": "Small discount (5-10%)",
+          "products": "Cart items + recommended accessories",
+          "keyMessage": "Small incentive to complete purchase"
+        },
+        {
+          "emailNumber": 4,
+          "day": 5,
+          "theme": "Last chance - special offer inside",
+          "focus": "Urgency and stronger incentive",
+          "hasOffer": true,
+          "offerType": "15% offer",
+          "products": "Cart items + urgency messaging",
+          "keyMessage": "Final chance with best offer"
+        }
+      ]
+    },
+    "type": "flow",
+    "created_at": "2025-09-22T15:50:35.038Z",
+    "updated_at": "2025-09-22T15:53:18.574Z"
+  },
+  "flow_1758679103053_co9cy": {
+    "id": "flow_1758679103053_co9cy",
+    "flow_name": "welcome - Brilliant Scents",
+    "client": "Brilliant Scents",
+    "flow_type": "welcome",
+    "email_count": 7,
+    "offer": "10% Off",
+    "emails": [
+      {
+        "emailNumber": 1,
+        "day": 1,
+        "theme": "Welcome to the Brilliant Scents Family",
+        "strategy": {
+          "emailNumber": 1,
+          "day": 1,
+          "theme": "Welcome to the Brilliant Scents Family",
+          "focus": "Brand introduction and warm welcome",
+          "hasOffer": true,
+          "offerType": "Welcome gift - first order discount",
+          "products": "Brand overview, no specific products",
+          "keyMessage": "Welcome! Here's your exclusive Brilliant Scents welcome offer"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Welcome to Brilliant Scents! Here's Your Exclusive 10% Off 🌟",
+            "You're In! Enjoy 10% Off Your First Luxury Fragrance",
+            "Welcome to Your New Fragrance Journey (+ Special Gift)"
+          ],
+          "preview_text": [
+            "Start your luxury home fragrance experience with an exclusive welcome offer",
+            "Transform your space with premium scents - plus save 10% on your first order",
+            "Your exclusive welcome gift awaits - discover luxury fragrances for less"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "WELCOME TO YOUR NEW FRAGRANCE JOURNEY"
+            },
+            {
+              "type": "body",
+              "content": "We're thrilled to welcome you to the Brilliant Scents family! Get ready to transform your space with luxurious fragrances that elevate every moment - without breaking the bank."
+            },
+            {
+              "type": "pic",
+              "content": "Featured lifestyle image: Elegant home setting with diffuser [Request from creative team]"
+            },
+            {
+              "type": "header",
+              "content": "YOUR EXCLUSIVE WELCOME GIFT"
+            },
+            {
+              "type": "body",
+              "content": "As a special thank you for joining us, enjoy 10% off your first order. Discover your perfect scent and start creating your ideal ambiance today."
+            },
+            {
+              "type": "cta",
+              "content": "SHOP NOW & SAVE 10%",
+              "link": "https://brilliantscents.com/collections/all"
+            },
+            {
+              "type": "subheader",
+              "content": "YOUR BRILLIANT SCENTS EXPERIENCE AWAITS"
+            },
+            {
+              "type": "body",
+              "content": "Get ready to explore our curated collection of premium fragrances, designed to bring luxury experiences to every corner of your home."
+            },
+            {
+              "type": "pic",
+              "content": "Product collection lifestyle shot [Request from creative team]"
+            },
+            {
+              "type": "header",
+              "content": "READY TO BEGIN?"
+            },
+            {
+              "type": "body",
+              "content": "Don't wait to transform your space. Your 10% welcome discount is ready to use on your first purchase."
+            },
+            {
+              "type": "cta",
+              "content": "START EXPLORING",
+              "link": "https://brilliantscents.com/collections/all"
+            },
+            {
+              "type": "body",
+              "content": "Welcome to the family! We can't wait to be part of your home fragrance journey."
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 2,
+        "day": 2,
+        "theme": "Our Story & Mission",
+        "strategy": {
+          "emailNumber": 2,
+          "day": 2,
+          "theme": "Our Story & Mission",
+          "focus": "Brand story and values alignment",
+          "hasOffer": true,
+          "offerType": "10% Off",
+          "products": "None - brand story focus",
+          "keyMessage": "Why we started and what drives us + 10% off offer"
+        },
+        "copyData": {
+          "subject_lines": [
+            "The Story Behind Your New Favorite Fragrances",
+            "Why We Started Brilliant Scents (Plus 10% Off)",
+            "A Passion for Perfect Fragrance + Special Offer"
+          ],
+          "preview_text": [
+            "Our journey to bring luxury scents to every home, plus save 10% today",
+            "Discover the inspiration behind Brilliant Scents (and enjoy 10% off)",
+            "From dream to reality: Creating accessible luxury fragrances"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "A PASSION FOR PERFECT FRAGRANCE"
+            },
+            {
+              "type": "body",
+              "content": "Every great story starts with a simple truth. Ours? That everyone deserves to experience the joy of luxury home fragrances without the luxury price tag."
+            },
+            {
+              "type": "pic",
+              "content": "Lifestyle image: Warm, inviting home setting with subtle fragrance elements. Request from creative team."
+            },
+            {
+              "type": "cta",
+              "content": "SAVE 10% TODAY",
+              "link": "https://brilliantscents.com/collections/all"
+            },
+            {
+              "type": "subheader",
+              "content": "OUR MISSION IS SIMPLE"
+            },
+            {
+              "type": "body",
+              "content": "To transform everyday moments into extraordinary experiences through accessible luxury fragrances that make your space feel like home."
+            },
+            {
+              "type": "pic",
+              "content": "Brand story image: Curated collection of signature scents. Request from creative team."
+            },
+            {
+              "type": "body",
+              "content": "We believe that a beautiful home fragrance shouldn't be a luxury reserved for special occasions. It should be part of your daily joy, your everyday indulgence, your personal sanctuary."
+            },
+            {
+              "type": "subheader",
+              "content": "JOIN US ON THIS JOURNEY"
+            },
+            {
+              "type": "body",
+              "content": "As a welcome to our fragrance family, enjoy 10% off your first purchase. Because everyone deserves their perfect scent."
+            },
+            {
+              "type": "cta",
+              "content": "DISCOVER YOUR SIGNATURE SCENT",
+              "link": "https://brilliantscents.com/collections/all"
+            },
+            {
+              "type": "body",
+              "content": "Use code: WELCOME10 at checkout"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 3,
+        "day": 4,
+        "theme": "Meet Your Perfect Products",
+        "strategy": {
+          "emailNumber": 3,
+          "day": 4,
+          "theme": "Meet Your Perfect Products",
+          "focus": "Product education and matching",
+          "hasOffer": true,
+          "offerType": "Product bundle discount",
+          "products": "Top 2-3 bestselling products",
+          "keyMessage": "Find your perfect match + bundle savings"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Find Your Perfect Scent Match (+ Save 10%)",
+            "Your Signature Scent Awaits | 10% Off Bundles",
+            "Discover Your Home's New Favorite Fragrance"
+          ],
+          "preview_text": [
+            "Take our quick scent quiz + save 10% on your perfect match bundle",
+            "Luxury fragrances matched to your style, with special bundle savings",
+            "Let us help you discover your ideal home fragrance combination"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "DISCOVER YOUR SIGNATURE SCENT"
+            },
+            {
+              "type": "body",
+              "content": "Every home tells a unique story. Let's find the perfect fragrance to tell yours, with personalized recommendations based on your style and preferences."
+            },
+            {
+              "type": "pic",
+              "content": "Lifestyle image: Elegant home interior with visible diffuser creating ambiance - request from creative team"
+            },
+            {
+              "type": "cta",
+              "content": "FIND MY PERFECT MATCH",
+              "link": "https://brilliantscents.com/quiz"
+            },
+            {
+              "type": "subheader",
+              "content": "CURATED COMBINATIONS FOR EVERY SPACE"
+            },
+            {
+              "type": "product",
+              "content": "The Living Room Collection",
+              "description": "Create an inviting atmosphere in your main living space with our most popular fragrance combinations, designed to welcome and delight.",
+              "cta": "SHOP LIVING ROOM",
+              "link": "https://brilliantscents.com/collections/living-room"
+            },
+            {
+              "type": "product",
+              "content": "The Bedroom Suite",
+              "description": "Transform your personal sanctuary with calming scents that help you unwind and create the perfect environment for rest.",
+              "cta": "SHOP BEDROOM",
+              "link": "https://brilliantscents.com/collections/bedroom"
+            },
+            {
+              "type": "subheader",
+              "content": "BUNDLE & SAVE 10%"
+            },
+            {
+              "type": "body",
+              "content": "Create your perfect home fragrance experience and save 10% when you bundle your favorite scents together. Mix and match to create your signature combination."
+            },
+            {
+              "type": "pic",
+              "content": "Product layout: Featured bundle combination with lifestyle staging - source from product team"
+            },
+            {
+              "type": "body",
+              "content": "Limited time offer: Save 10% on all fragrance bundles. Create your perfect combination today."
+            },
+            {
+              "type": "cta",
+              "content": "SHOP BUNDLES & SAVE",
+              "link": "https://brilliantscents.com/bundles"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 4,
+        "day": 7,
+        "theme": "What Our Customers Say",
+        "strategy": {
+          "emailNumber": 4,
+          "day": 7,
+          "theme": "What Our Customers Say",
+          "focus": "Social proof and testimonials",
+          "hasOffer": true,
+          "offerType": "Customer-inspired offer",
+          "products": "Most reviewed products",
+          "keyMessage": "Real customer stories + same great deals"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Our Customers Can't Stop Talking About This... 🗣️",
+            "Real Stories from the Brilliant Scents Family ⭐",
+            "See Why 'Amazing' Is Just The Beginning..."
+          ],
+          "preview_text": [
+            "Join thousands of happy customers + exclusive 10% off today",
+            "Discover what makes our fragrances a customer favorite (+ special offer)",
+            "Real reviews from real customers + save 10% on your first order"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "THE REVIEWS ARE IN..."
+            },
+            {
+              "type": "body",
+              "content": "We could tell you about our luxury fragrances all day, but we think our customers say it best. Here's what the Brilliant Scents family is saying about their favorite home fragrance experiences..."
+            },
+            {
+              "type": "pic",
+              "content": "Customer lifestyle photo collage - homes with Brilliant Scents products in use [Source from customer photo gallery]"
+            },
+            {
+              "type": "cta",
+              "content": "SHOP CUSTOMER FAVORITES",
+              "link": "https://brilliantscents.com/best-sellers"
+            },
+            {
+              "type": "subheader",
+              "content": "FROM OUR MOST-LOVED COLLECTION"
+            },
+            {
+              "type": "pic",
+              "content": "Product review snapshot showing 5-star ratings [Source from review platform]"
+            },
+            {
+              "type": "body",
+              "content": "Join thousands of happy customers who've transformed their homes with premium fragrances at accessible prices. Our most reviewed products consistently earn 5-star ratings for their lasting quality and sophisticated scents."
+            },
+            {
+              "type": "subheader",
+              "content": "INSPIRED BY YOU - EXCLUSIVE OFFER"
+            },
+            {
+              "type": "body",
+              "content": "Our customers inspire us every day. To celebrate your journey with us, enjoy 10% off your first purchase when you join the Brilliant Scents family today."
+            },
+            {
+              "type": "cta",
+              "content": "SAVE 10% NOW",
+              "link": "https://brilliantscents.com/shop"
+            },
+            {
+              "type": "subheader",
+              "content": "THE BRILLIANT SCENTS PROMISE"
+            },
+            {
+              "type": "body",
+              "content": "Every product comes with our customer satisfaction guarantee. Experience the luxury fragrance difference that has everyone talking - at a price that makes sense."
+            },
+            {
+              "type": "cta",
+              "content": "START YOUR FRAGRANCE JOURNEY",
+              "link": "https://brilliantscents.com/shop"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 5,
+        "day": 10,
+        "theme": "Behind the Scenes",
+        "strategy": {
+          "emailNumber": 5,
+          "day": 10,
+          "theme": "Behind the Scenes",
+          "focus": "Manufacturing, quality, or team spotlight",
+          "hasOffer": true,
+          "offerType": "Exclusive insider offer",
+          "products": "Premium or signature products",
+          "keyMessage": "Exclusive access + insider pricing"
+        },
+        "copyData": {
+          "subject_lines": [
+            "🔒 Your Exclusive Behind-the-Scenes Access",
+            "Step Inside: Your VIP Look at Brilliant Scents",
+            "Exclusive: See How Your Favorite Fragrances Come to Life"
+          ],
+          "preview_text": [
+            "Plus, unlock your special insider pricing today",
+            "Your exclusive look + special VIP savings inside",
+            "Take a peek behind the curtain + save 10%"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "STEP INSIDE OUR FRAGRANCE STUDIO"
+            },
+            {
+              "type": "body",
+              "content": "As a valued member of our community, you're invited to peek behind the curtain and discover how we craft the perfect scent experience. From carefully selected ingredients to our artisanal blending process, every detail matters."
+            },
+            {
+              "type": "pic",
+              "content": "Lifestyle image: Fragrance artisans at work in studio setting [Request studio imagery from creative team]"
+            },
+            {
+              "type": "cta",
+              "content": "UNLOCK YOUR INSIDER OFFER",
+              "link": "https://brilliantscents.com/shop"
+            },
+            {
+              "type": "subheader",
+              "content": "CRAFTED WITH PASSION"
+            },
+            {
+              "type": "body",
+              "content": "Every Brilliant Scents creation begins in our dedicated fragrance studio, where our team of artisans carefully blend and test each formulation until it meets our exacting standards."
+            },
+            {
+              "type": "pic",
+              "content": "Behind-the-scenes production process [Request current production imagery]"
+            },
+            {
+              "type": "subheader",
+              "content": "EXCLUSIVE INSIDER PRICING"
+            },
+            {
+              "type": "body",
+              "content": "As a thank you for joining us behind the scenes, enjoy 10% off your next order. Experience our premium fragrances at exclusive member pricing."
+            },
+            {
+              "type": "product",
+              "content": "Signature Collection",
+              "description": "Our most sought-after premium fragrances, crafted with exceptional attention to detail.",
+              "cta": "SHOP NOW & SAVE 10%",
+              "link": "https://brilliantscents.com/signature-collection"
+            },
+            {
+              "type": "subheader",
+              "content": "LIMITED TIME OFFER"
+            },
+            {
+              "type": "body",
+              "content": "Your exclusive 10% discount is available for a limited time only. Don't miss this opportunity to experience our premium fragrances at special insider pricing."
+            },
+            {
+              "type": "cta",
+              "content": "CLAIM YOUR 10% OFF NOW",
+              "link": "https://brilliantscents.com/shop"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 6,
+        "day": 12,
+        "theme": "Complete Collection Tour",
+        "strategy": {
+          "emailNumber": 6,
+          "day": 12,
+          "theme": "Complete Collection Tour",
+          "focus": "Full product range and capabilities",
+          "hasOffer": true,
+          "offerType": "Everything discount",
+          "products": "Full product range",
+          "keyMessage": "Explore everything with collection-wide savings"
+        },
+        "copyData": {
+          "subject_lines": [
+            "Explore Our Complete Collection (+ Save 10% Today)",
+            "Your Luxury Fragrance Journey Awaits (10% Off Everything)",
+            "Discover Every Brilliant Scent (Special Savings Inside)"
+          ],
+          "preview_text": [
+            "Take a tour of our full fragrance collection and save 10% on your favorites",
+            "From signature scents to seasonal collections - explore it all with special savings",
+            "Experience our complete luxury fragrance range with exclusive welcome savings"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "DISCOVER YOUR PERFECT FRAGRANCE MOMENT"
+            },
+            {
+              "type": "body",
+              "content": "Whether you're creating a cozy morning ritual, setting the mood for entertaining, or unwinding after a long day, we have a luxury fragrance experience waiting for you. Take a journey through our complete collection and save 10% on everything you love."
+            },
+            {
+              "type": "cta",
+              "content": "EXPLORE THE COLLECTION",
+              "link": "https://brilliantscents.com/collections/all"
+            },
+            {
+              "type": "subheader",
+              "content": "SIGNATURE COLLECTION"
+            },
+            {
+              "type": "pic",
+              "content": "Lifestyle image of signature collection display - Ask for hero collection photography"
+            },
+            {
+              "type": "body",
+              "content": "Our foundational fragrances bring timeless luxury to your everyday moments. Discover sophisticated scents crafted for year-round enjoyment."
+            },
+            {
+              "type": "subheader",
+              "content": "SEASONAL FAVORITES"
+            },
+            {
+              "type": "pic",
+              "content": "Seasonal collection lifestyle image - Request current season photography"
+            },
+            {
+              "type": "body",
+              "content": "Embrace the spirit of each season with our limited-edition collections. From fresh spring florals to cozy winter warmth, find the perfect accent for every time of year."
+            },
+            {
+              "type": "subheader",
+              "content": "EXCLUSIVE LUXE LINE"
+            },
+            {
+              "type": "pic",
+              "content": "Premium collection lifestyle image - Request luxury line photography"
+            },
+            {
+              "type": "body",
+              "content": "Elevate your space with our most indulgent fragrances. These sophisticated blends bring an extra touch of luxury to special occasions and cherished spaces."
+            },
+            {
+              "type": "header",
+              "content": "READY TO TRANSFORM YOUR SPACE?"
+            },
+            {
+              "type": "body",
+              "content": "Don't miss your chance to save 10% on our complete collection. Find your perfect fragrance and create your own luxury experience at home."
+            },
+            {
+              "type": "cta",
+              "content": "SHOP NOW & SAVE 10%",
+              "link": "https://brilliantscents.com/collections/all"
+            }
+          ]
+        },
+        "hasOffer": true
+      },
+      {
+        "emailNumber": 7,
+        "day": 14,
+        "theme": "Your Journey Starts Now",
+        "strategy": {
+          "emailNumber": 7,
+          "day": 14,
+          "theme": "Your Journey Starts Now",
+          "focus": "Motivation and final conversion push",
+          "hasOffer": true,
+          "offerType": "Final welcome series offer",
+          "products": "Best for beginners or most popular",
+          "keyMessage": "Time to start your journey + best welcome pricing"
+        },
+        "copyData": {
+          "subject_lines": [
+            "🌟 Your Journey to Luxurious Living Starts Now (+ Final 10% Off)",
+            "Ready to Transform Your Space? Last Chance for 10% Off",
+            "Don't Miss Out! Your Exclusive Welcome Offer Ends Soon"
+          ],
+          "preview_text": [
+            "Start your fragrance journey today with our best welcome pricing",
+            "Final chance to save 10% on your first luxury scent experience",
+            "Transform your space with premium fragrances at welcome pricing"
+          ],
+          "email_blocks": [
+            {
+              "type": "header",
+              "content": "YOUR MOMENT HAS ARRIVED"
+            },
+            {
+              "type": "body",
+              "content": "The perfect fragrance can transform any space into a sanctuary. Your journey to elevated living begins with this moment – and we're here to make it even more special with our final welcome offer."
+            },
+            {
+              "type": "pic",
+              "content": "Lifestyle image of an inviting living space with visible diffuser - request from creative team"
+            },
+            {
+              "type": "cta",
+              "content": "CLAIM YOUR 10% OFF",
+              "link": "https://brilliantscents.com/shop"
+            },
+            {
+              "type": "subheader",
+              "content": "PERFECT FOR BEGINNERS"
+            },
+            {
+              "type": "body",
+              "content": "Start your fragrance journey with our most popular selections, carefully curated for those beginning their scent story."
+            },
+            {
+              "type": "product",
+              "content": "Featured Collection",
+              "description": "Discover our best-selling fragrances that have delighted thousands of customers starting their own scent journeys.",
+              "cta": "SHOP NOW",
+              "link": "https://brilliantscents.com/bestsellers"
+            },
+            {
+              "type": "subheader",
+              "content": "LIMITED TIME WELCOME OFFER"
+            },
+            {
+              "type": "body",
+              "content": "Your exclusive 10% welcome discount ends soon. Don't miss this opportunity to begin your luxury fragrance experience at our best pricing."
+            },
+            {
+              "type": "pic",
+              "content": "Product layout featuring bestselling items with elegant packaging - request from product team"
+            },
+            {
+              "type": "body",
+              "content": "✨ Premium fragrances at welcome pricing\n🎁 Exclusive new customer discount\n⭐ Risk-free trial\n🚚 Fast, secure delivery"
+            },
+            {
+              "type": "subheader",
+              "content": "TIME TO DECIDE"
+            },
+            {
+              "type": "body",
+              "content": "This is your final chance to save 10% as a new member of the Brilliant Scents family. Transform your space into the sanctuary you deserve."
+            },
+            {
+              "type": "cta",
+              "content": "START YOUR JOURNEY NOW",
+              "link": "https://brilliantscents.com/shop"
+            }
+          ]
+        },
+        "hasOffer": true
+      }
+    ],
+    "strategy": {
+      "flowType": "welcome",
+      "emailCount": 7,
+      "offer": "10% Off",
+      "client": "Brilliant Scents",
+      "scrapedInsights": [
+        "Social proof and reviews are key differentiators",
+        "Brilliant Scents brand voice and messaging themes identified",
+        "Product lineup and pricing structure analyzed"
+      ],
+      "emailStrategies": [
+        {
+          "emailNumber": 1,
+          "day": 1,
+          "theme": "Welcome to the Brilliant Scents Family",
+          "focus": "Brand introduction and warm welcome",
+          "hasOffer": true,
+          "offerType": "Welcome gift - first order discount",
+          "products": "Brand overview, no specific products",
+          "keyMessage": "Welcome! Here's your exclusive Brilliant Scents welcome offer"
+        },
+        {
+          "emailNumber": 2,
+          "day": 2,
+          "theme": "Our Story & Mission",
+          "focus": "Brand story and values alignment",
+          "hasOffer": true,
+          "offerType": "10% Off",
+          "products": "None - brand story focus",
+          "keyMessage": "Why we started and what drives us + 10% off offer"
+        },
+        {
+          "emailNumber": 3,
+          "day": 4,
+          "theme": "Meet Your Perfect Products",
+          "focus": "Product education and matching",
+          "hasOffer": true,
+          "offerType": "Product bundle discount",
+          "products": "Top 2-3 bestselling products",
+          "keyMessage": "Find your perfect match + bundle savings"
+        },
+        {
+          "emailNumber": 4,
+          "day": 7,
+          "theme": "What Our Customers Say",
+          "focus": "Social proof and testimonials",
+          "hasOffer": true,
+          "offerType": "Customer-inspired offer",
+          "products": "Most reviewed products",
+          "keyMessage": "Real customer stories + same great deals"
+        },
+        {
+          "emailNumber": 5,
+          "day": 10,
+          "theme": "Behind the Scenes",
+          "focus": "Manufacturing, quality, or team spotlight",
+          "hasOffer": true,
+          "offerType": "Exclusive insider offer",
+          "products": "Premium or signature products",
+          "keyMessage": "Exclusive access + insider pricing"
+        },
+        {
+          "emailNumber": 6,
+          "day": 12,
+          "theme": "Complete Collection Tour",
+          "focus": "Full product range and capabilities",
+          "hasOffer": true,
+          "offerType": "Everything discount",
+          "products": "Full product range",
+          "keyMessage": "Explore everything with collection-wide savings"
+        },
+        {
+          "emailNumber": 7,
+          "day": 14,
+          "theme": "Your Journey Starts Now",
+          "focus": "Motivation and final conversion push",
+          "hasOffer": true,
+          "offerType": "Final welcome series offer",
+          "products": "Best for beginners or most popular",
+          "keyMessage": "Time to start your journey + best welcome pricing"
+        }
+      ]
+    },
+    "type": "flow",
+    "created_at": "2025-09-24T01:58:23.053Z",
+    "updated_at": "2025-09-24T01:58:39.887Z"
+  }
+}

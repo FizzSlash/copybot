@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Globe, Save, Plus, MessageSquare, Calendar, User } from 'lucide-react';
+import { ArrowLeft, Globe, Save, Plus, MessageSquare, Calendar, User, Edit2, Trash2, Check, X } from 'lucide-react';
 
 interface Client {
   id: string;
@@ -58,6 +58,12 @@ export default function ClientDetailPage() {
   // New note state
   const [newNote, setNewNote] = useState({ note: '', category: 'general' as const });
   const [addingNote, setAddingNote] = useState(false);
+
+  // Edit note state
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+  const [editingNote, setEditingNote] = useState({ note: '', category: 'general' as const });
+  const [updatingNote, setUpdatingNote] = useState(false);
+  const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
 
   useEffect(() => {
     if (clientId) {
@@ -170,6 +176,68 @@ export default function ClientDetailPage() {
       console.error('💥 CLIENT DETAIL: Error adding note:', error);
     } finally {
       setAddingNote(false);
+    }
+  };
+
+  const handleEditNote = (note: ClientNote) => {
+    setEditingNoteId(note.id);
+    setEditingNote({ note: note.note, category: note.category as 'general' });
+  };
+
+  const handleUpdateNote = async () => {
+    if (!editingNote.note.trim() || !editingNoteId) return;
+    
+    setUpdatingNote(true);
+    try {
+      console.log('📝 CLIENT DETAIL: Updating note...');
+      const response = await fetch(`/api/clients/${clientId}/notes/${editingNoteId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingNote)
+      });
+
+      if (response.ok) {
+        console.log('✅ CLIENT DETAIL: Note updated successfully');
+        setEditingNoteId(null);
+        setEditingNote({ note: '', category: 'general' });
+        loadNotes(); // Reload notes
+      } else {
+        console.error('❌ CLIENT DETAIL: Failed to update note');
+      }
+    } catch (error) {
+      console.error('💥 CLIENT DETAIL: Error updating note:', error);
+    } finally {
+      setUpdatingNote(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingNoteId(null);
+    setEditingNote({ note: '', category: 'general' });
+  };
+
+  const handleDeleteNote = async (noteId: string) => {
+    if (!window.confirm('Are you sure you want to delete this note?')) {
+      return;
+    }
+    
+    setDeletingNoteId(noteId);
+    try {
+      console.log('🗑️ CLIENT DETAIL: Deleting note...');
+      const response = await fetch(`/api/clients/${clientId}/notes/${noteId}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        console.log('✅ CLIENT DETAIL: Note deleted successfully');
+        loadNotes(); // Reload notes
+      } else {
+        console.error('❌ CLIENT DETAIL: Failed to delete note');
+      }
+    } catch (error) {
+      console.error('💥 CLIENT DETAIL: Error deleting note:', error);
+    } finally {
+      setDeletingNoteId(null);
     }
   };
 
@@ -487,15 +555,87 @@ export default function ClientDetailPage() {
                 notes.map((note) => (
                   <div key={note.id} className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-start justify-between mb-2">
-                      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(note.category)}`}>
-                        <span className="mr-1">{getCategoryIcon(note.category)}</span>
-                        {note.category}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {formatDate(note.created_at)}
-                      </span>
+                      <div className="flex items-center space-x-2">
+                        {editingNoteId === note.id ? (
+                          <select
+                            value={editingNote.category}
+                            onChange={(e) => setEditingNote({...editingNote, category: e.target.value as any})}
+                            className="text-xs px-2 py-1 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+                          >
+                            <option value="general">General</option>
+                            <option value="insight">Insight</option>
+                            <option value="preference">Preference</option>
+                            <option value="feedback">Feedback</option>
+                          </select>
+                        ) : (
+                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(note.category)}`}>
+                            <span className="mr-1">{getCategoryIcon(note.category)}</span>
+                            {note.category}
+                          </span>
+                        )}
+                      </div>
+                      
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">
+                          {formatDate(note.created_at)}
+                        </span>
+                        
+                        {editingNoteId === note.id ? (
+                          <div className="flex items-center space-x-1">
+                            <button
+                              onClick={handleUpdateNote}
+                              disabled={updatingNote || !editingNote.note.trim()}
+                              className="p-1 text-green-600 hover:text-green-800 disabled:text-gray-400"
+                              title="Save"
+                            >
+                              <Check className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={handleCancelEdit}
+                              disabled={updatingNote}
+                              className="p-1 text-gray-600 hover:text-gray-800"
+                              title="Cancel"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center space-x-1">
+                            <button
+                              onClick={() => handleEditNote(note)}
+                              className="p-1 text-blue-600 hover:text-blue-800"
+                              title="Edit"
+                            >
+                              <Edit2 className="h-3 w-3" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteNote(note.id)}
+                              disabled={deletingNoteId === note.id}
+                              className="p-1 text-red-600 hover:text-red-800 disabled:text-gray-400"
+                              title="Delete"
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <p className="text-gray-900 text-sm">{note.note}</p>
+                    
+                    {editingNoteId === note.id ? (
+                      <textarea
+                        value={editingNote.note}
+                        onChange={(e) => setEditingNote({...editingNote, note: e.target.value})}
+                        rows={3}
+                        className="w-full text-sm px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 resize-none"
+                        placeholder="Edit your note..."
+                      />
+                    ) : (
+                      <p className="text-gray-900 text-sm">{note.note}</p>
+                    )}
+                    
+                    {deletingNoteId === note.id && (
+                      <div className="mt-2 text-xs text-gray-500 italic">Deleting...</div>
+                    )}
                   </div>
                 ))
               )}

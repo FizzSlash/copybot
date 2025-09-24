@@ -1,227 +1,213 @@
-import Airtable from 'airtable';
-import type { AirtableRecord, AirtableCampaign, Campaign } from '@/types';
-
-// Initialize Airtable
-const base = new Airtable({ 
-  apiKey: process.env.AIRTABLE_API_KEY 
-}).base(process.env.AIRTABLE_BASE_ID!);
-
+// Airtable API Integration Service
 export class AirtableService {
-  private campaignsTable = base('Campaigns'); // Adjust table name as needed
+  private baseUrl: string;
+  private headers: Record<string, string>;
 
-  // Map Airtable field names to our internal structure
-  private fieldMapping = {
-    name: 'Campaign Name',
-    client: 'Client Name',
-    status: 'Status',
-    deadline: 'Deadline',
-    brief: 'Campaign Brief',
-    campaign_type: 'Campaign Type',
-    priority: 'Priority'
-  };
+  constructor() {
+    const token = process.env.AIRTABLE_TOKEN;
+    const baseId = process.env.AIRTABLE_BASE_ID;
 
-  async getCampaigns(): Promise<AirtableCampaign[]> {
-    try {
-      const records = await this.campaignsTable.select({
-        // Add any filtering if needed
-        // filterByFormula: 'NOT({Status} = "Completed")',
-        sort: [{ field: 'Created', direction: 'desc' }]
-      }).all();
-
-      return records.map(this.mapAirtableRecord);
-    } catch (error) {
-      console.error('Error fetching campaigns from Airtable:', error);
-      throw new Error('Failed to fetch campaigns from Airtable');
+    if (!token || !baseId) {
+      throw new Error('Missing Airtable configuration. Please set AIRTABLE_TOKEN and AIRTABLE_BASE_ID in your .env.local file.');
     }
-  }
 
-  async getCampaign(airtableId: string): Promise<AirtableCampaign | null> {
-    try {
-      const record = await this.campaignsTable.find(airtableId);
-      return this.mapAirtableRecord(record);
-    } catch (error) {
-      console.error(`Error fetching campaign ${airtableId} from Airtable:`, error);
-      return null;
-    }
-  }
-
-  async updateCampaignStatus(airtableId: string, status: string, copyContent?: string): Promise<void> {
-    try {
-      const updates: { [key: string]: any } = {
-        [this.fieldMapping.status]: status
-      };
-
-      // If copy content is provided, add it to the update
-      if (copyContent) {
-        updates['Generated Copy'] = copyContent;
-        updates['Copy Generated Date'] = new Date().toISOString();
-      }
-
-      await this.campaignsTable.update(airtableId, updates);
-    } catch (error) {
-      console.error(`Error updating campaign ${airtableId} in Airtable:`, error);
-      throw new Error('Failed to update campaign in Airtable');
-    }
-  }
-
-  async syncCampaignsToDatabase(): Promise<{ imported: number; updated: number; errors: string[] }> {
-    const results = {
-      imported: 0,
-      updated: 0,
-      errors: [] as string[]
+    this.baseUrl = `https://api.airtable.com/v0/${baseId}`;
+    this.headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
     };
+  }
 
+  // Get active campaigns (past 7 days + all future campaigns)
+  async getActiveCampaigns(): Promise<any[]> {
+    console.log('🔄 AIRTABLE: Fetching active campaigns (past 7 days + future)...');
+    
     try {
-      const airtableCampaigns = await this.getCampaigns();
+      const today = new Date();
+      const pastDate = new Date();
+      pastDate.setDate(today.getDate() - 7); // 7 days ago
       
-      for (const airtableCampaign of airtableCampaigns) {
-        try {
-          // This would typically involve checking if the campaign exists in your database
-          // and either creating or updating it
-          await this.syncSingleCampaign(airtableCampaign);
-          results.imported += 1;
-        } catch (error) {
-          results.errors.push(`Failed to sync campaign "${airtableCampaign.name}": ${error}`);
-        }
-      }
-
-    } catch (error) {
-      results.errors.push(`Failed to fetch campaigns from Airtable: ${error}`);
-    }
-
-    return results;
-  }
-
-  private async syncSingleCampaign(airtableCampaign: AirtableCampaign): Promise<void> {
-    // This would integrate with your Supabase database
-    // For now, this is a placeholder that you'd implement based on your specific needs
-    
-    // Example of what this might look like:
-    /*
-    const databaseService = new DatabaseService();
-    
-    // Check if campaign already exists
-    const existingCampaigns = await databaseService.getCampaigns();
-    const existingCampaign = existingCampaigns.find(c => c.airtable_id === airtableCampaign.id);
-    
-    if (existingCampaign) {
-      // Update existing campaign
-      await databaseService.updateCampaign(existingCampaign.id, {
-        name: airtableCampaign.name,
-        status: this.mapStatusToDatabase(airtableCampaign.status),
-        deadline: airtableCampaign.deadline,
-        brief: airtableCampaign.brief
-      });
-    } else {
-      // Find or create client first
-      const client = await this.findOrCreateClient(airtableCampaign.client);
+      const pastDateStr = pastDate.toISOString().split('T')[0];
       
-      // Create new campaign
-      await databaseService.createCampaign({
-        airtable_id: airtableCampaign.id,
-        client_id: client.id,
-        name: airtableCampaign.name,
-        type: 'campaign', // or determine from airtableCampaign.campaign_type
-        status: 'draft',
-        deadline: airtableCampaign.deadline,
-        brief: airtableCampaign.brief
+      console.log(`📅 AIRTABLE: Looking for campaigns with Send Date >= ${pastDateStr} (past 7 days + future)`);
+
+      // Filter: Send Date is 7 days ago or later (includes past 7 days + all future)
+      const filterFormula = `IS_AFTER({Send Date}, '${pastDateStr}')`;
+      const url = `${this.baseUrl}/Retention?filterByFormula=${encodeURIComponent(filterFormula)}&sort[0][field]=Send%20Date&sort[0][direction]=asc`;
+      
+      console.log('📡 AIRTABLE: API URL:', url);
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.headers
       });
-    }
-    */
-    
-    console.log(`Would sync campaign: ${airtableCampaign.name}`);
-  }
 
-  private mapAirtableRecord(record: any): AirtableCampaign {
-    const fields = record.fields;
-    
-    return {
-      id: record.id,
-      name: fields[this.fieldMapping.name] || 'Untitled Campaign',
-      client: fields[this.fieldMapping.client] || 'Unknown Client',
-      status: fields[this.fieldMapping.status] || 'Draft',
-      deadline: fields[this.fieldMapping.deadline] || undefined,
-      brief: fields[this.fieldMapping.brief] || undefined,
-      campaign_type: fields[this.fieldMapping.campaign_type] || undefined,
-      priority: fields[this.fieldMapping.priority] || undefined
-    };
-  }
-
-  private mapStatusToDatabase(airtableStatus: string): Campaign['status'] {
-    // Map Airtable statuses to your database statuses
-    const statusMap: { [key: string]: Campaign['status'] } = {
-      'Draft': 'draft',
-      'In Progress': 'in_progress',
-      'Review': 'in_progress',
-      'Completed': 'completed',
-      'Archived': 'archived'
-    };
-
-    return statusMap[airtableStatus] || 'draft';
-  }
-
-  // Helper method to set up webhooks (you'd call this once to configure Airtable webhooks)
-  async setupWebhooks(webhookUrl: string): Promise<void> {
-    // This would be implemented using Airtable's webhook API
-    // For now, this is a placeholder
-    console.log(`Would setup webhook for URL: ${webhookUrl}`);
-  }
-
-  // Handle incoming webhook data
-  async handleWebhook(payload: any): Promise<void> {
-    try {
-      // Process webhook payload from Airtable
-      const { changedRecords, createdRecords, destroyedRecords } = payload;
-
-      // Handle created records
-      if (createdRecords && createdRecords.length > 0) {
-        for (const record of createdRecords) {
-          const campaign = this.mapAirtableRecord(record);
-          await this.syncSingleCampaign(campaign);
-        }
+      if (!response.ok) {
+        throw new Error(`Airtable API error: ${response.status} ${response.statusText}`);
       }
 
-      // Handle changed records
-      if (changedRecords && changedRecords.length > 0) {
-        for (const record of changedRecords) {
-          const campaign = this.mapAirtableRecord(record);
-          await this.syncSingleCampaign(campaign);
-        }
-      }
+      const data = await response.json();
+      console.log(`✅ AIRTABLE: Found ${data.records?.length || 0} active campaigns`);
+      console.log('📊 AIRTABLE: Campaign data:', JSON.stringify(data.records, null, 2));
 
-      // Handle destroyed records
-      if (destroyedRecords && destroyedRecords.length > 0) {
-        // You might want to archive these in your database rather than delete
-        console.log('Records destroyed in Airtable:', destroyedRecords);
-      }
-
+      return data.records || [];
     } catch (error) {
-      console.error('Error processing Airtable webhook:', error);
+      console.error('❌ AIRTABLE: Error fetching campaigns:', error);
+      throw error;
+    }
+  }
+
+  // Get campaigns by date range (for flexible filtering)
+  async getCampaignsByDate(daysBack: number = 7, daysAhead: number = 365): Promise<any[]> {
+    console.log(`🔄 AIRTABLE: Fetching campaigns (${daysBack} days back to ${daysAhead} days ahead)...`);
+    
+    try {
+      const today = new Date();
+      const pastDate = new Date();
+      const futureDate = new Date();
+      pastDate.setDate(today.getDate() - daysBack);
+      futureDate.setDate(today.getDate() + daysAhead);
+      
+      const pastDateStr = pastDate.toISOString().split('T')[0];
+      const futureDateStr = futureDate.toISOString().split('T')[0];
+      
+      console.log(`📅 AIRTABLE: Looking for campaigns between ${pastDateStr} and ${futureDateStr}`);
+
+      const filterFormula = `AND(
+        IS_AFTER({Send Date}, '${pastDateStr}'),
+        IS_BEFORE({Send Date}, '${futureDateStr}')
+      )`;
+
+      const url = `${this.baseUrl}/Retention?filterByFormula=${encodeURIComponent(filterFormula)}&sort[0][field]=Send%20Date&sort[0][direction]=asc`;
+      
+      console.log('📡 AIRTABLE: API URL:', url);
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.headers
+      });
+
+      if (!response.ok) {
+        throw new Error(`Airtable API error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log(`✅ AIRTABLE: Found ${data.records?.length || 0} campaigns in date range`);
+
+      return data.records || [];
+    } catch (error) {
+      console.error('❌ AIRTABLE: Error fetching campaigns:', error);
+      throw error;
+    }
+  }
+
+  // Update campaign with copy link and set stage to Design QA
+  async updateCampaignCopyLink(recordId: string, copyLink: string): Promise<any> {
+    console.log('🔄 AIRTABLE: Updating campaign copy link and stage...');
+    console.log('📝 AIRTABLE: Record ID:', recordId);
+    console.log('🔗 AIRTABLE: Copy Link:', copyLink);
+    
+    try {
+      const url = `${this.baseUrl}/Retention/${recordId}`;
+      
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: this.headers,
+        body: JSON.stringify({
+          fields: {
+            'Copy Link': copyLink,
+            'Stage': 'Design QA'
+          }
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ AIRTABLE: Update error response:', errorText);
+        throw new Error(`Airtable update error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('✅ AIRTABLE: Campaign updated successfully with Copy Link and Stage');
+      console.log('📊 AIRTABLE: Updated record:', JSON.stringify(data, null, 2));
+
+      return data;
+    } catch (error) {
+      console.error('❌ AIRTABLE: Error updating campaign:', error);
       throw error;
     }
   }
 
   // Test connection to Airtable
-  async testConnection(): Promise<boolean> {
+  async testConnection(): Promise<{ success: boolean; message: string; data?: any }> {
+    console.log('🧪 AIRTABLE: Testing connection...');
+    
     try {
-      const records = await this.campaignsTable.select({
-        maxRecords: 1
-      }).firstPage();
+      const url = `${this.baseUrl}/Retention?maxRecords=1`;
       
-      return true;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.headers
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ AIRTABLE: Test connection failed:', errorText);
+        return {
+          success: false,
+          message: `Connection failed: ${response.status} ${response.statusText}`,
+          data: { error: errorText }
+        };
+      }
+
+      const data = await response.json();
+      console.log('✅ AIRTABLE: Connection successful');
+      console.log('📊 AIRTABLE: Test data:', JSON.stringify(data, null, 2));
+
+      return {
+        success: true,
+        message: `Connected successfully! Found ${data.records?.length || 0} records.`,
+        data: data
+      };
     } catch (error) {
-      console.error('Airtable connection test failed:', error);
-      return false;
+      console.error('❌ AIRTABLE: Test connection error:', error);
+      return {
+        success: false,
+        message: `Connection error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        data: { error }
+      };
     }
   }
 
-  // Get field mapping for configuration
-  getFieldMapping(): typeof this.fieldMapping {
-    return { ...this.fieldMapping };
-  }
+  // Get all campaigns (for debugging/testing)
+  async getAllCampaigns(maxRecords: number = 10): Promise<any[]> {
+    console.log(`🔄 AIRTABLE: Fetching ${maxRecords} campaigns for testing...`);
+    
+    try {
+      const url = `${this.baseUrl}/Retention?maxRecords=${maxRecords}`;
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.headers
+      });
 
-  // Update field mapping
-  updateFieldMapping(newMapping: Partial<typeof this.fieldMapping>): void {
-    this.fieldMapping = { ...this.fieldMapping, ...newMapping };
+      if (!response.ok) {
+        throw new Error(`Airtable API error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log(`✅ AIRTABLE: Retrieved ${data.records?.length || 0} campaigns`);
+      
+      // Log campaign structure for debugging
+      if (data.records && data.records.length > 0) {
+        console.log('📋 AIRTABLE: Sample campaign fields:', Object.keys(data.records[0].fields));
+        console.log('📊 AIRTABLE: First campaign:', JSON.stringify(data.records[0], null, 2));
+      }
+
+      return data.records || [];
+    } catch (error) {
+      console.error('❌ AIRTABLE: Error fetching all campaigns:', error);
+      throw error;
+    }
   }
 }

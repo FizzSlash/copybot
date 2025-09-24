@@ -76,7 +76,7 @@ export default function NewClientPage() {
     handleQuestionnaireChange('brand_personality', updated);
   };
 
-  const handleArrayFieldChange = (field: keyof BrandQuestionnaireData, value: string) => {
+  const handleArrayFieldChange = (field: string, value: string) => {
     const items = value.split(',').map(item => item.trim()).filter(item => item.length > 0);
     handleQuestionnaireChange(field, items);
   };
@@ -97,7 +97,7 @@ export default function NewClientPage() {
         },
         body: JSON.stringify({
           url: formData.website_url,
-          flow_type: 'general' // General brand analysis
+          focus: 'brand analysis' // Trigger Claude brand analysis
         }),
       });
 
@@ -106,27 +106,77 @@ export default function NewClientPage() {
         throw new Error(errorData.error || 'Scraping failed');
       }
 
-      const { data } = await response.json();
+      const responseData = await response.json();
+      console.log('📊 SCRAPE RESPONSE:', responseData);
       
-      // Auto-populate fields based on Claude's analysis
-      setFormData(prev => ({
-        ...prev,
-        company: data.title || prev.company,
-        brand_questionnaire: {
-          ...prev.brand_questionnaire,
-          brand_voice: data.brand_voice_analysis || prev.brand_questionnaire.brand_voice,
-          target_audience: data.target_audience || prev.brand_questionnaire.target_audience,
-          key_messaging: data.key_messaging?.join(', ') || prev.brand_questionnaire.key_messaging,
-          brand_personality: data.brand_personality || prev.brand_questionnaire.brand_personality,
-          competitors: data.competitors_mentioned || prev.brand_questionnaire.competitors,
-          pain_points: data.pain_points_addressed || prev.brand_questionnaire.pain_points,
-          unique_value_props: data.unique_value_props || prev.brand_questionnaire.unique_value_props,
-          tone_examples: data.tone_examples?.join('\n\n') || prev.brand_questionnaire.tone_examples,
-          content_preferences: data.product_info || prev.brand_questionnaire.content_preferences
-        }
-      }));
+      // Check if we got brand analysis from Claude
+      console.log('🔍 AUTO-FILL: Checking for brandAnalysis...', !!responseData.brandAnalysis);
+      console.log('🔍 AUTO-FILL: Response keys:', Object.keys(responseData));
       
-      alert('Website scraped successfully! Brand information has been auto-populated from Claude analysis.');
+      if (responseData.brandAnalysis) {
+        console.log('🧠 AUTO-FILL: Using Claude brand analysis');
+        const analysis = responseData.brandAnalysis;
+        console.log('🧠 AUTO-FILL: Analysis data:', analysis);
+        
+        // Map Claude's brand personality to form options
+        const mapBrandPersonality = (claudePersonalities: string[]): string[] => {
+          const personalityMapping: Record<string, string[]> = {
+            'Professional': ['professional', 'expert', 'authoritative'],
+            'Friendly': ['friendly', 'approachable', 'customer-focused'],
+            'Authoritative': ['authoritative', 'expert', 'trustworthy'],
+            'Playful': ['playful', 'trendy', 'fun'],
+            'Innovative': ['innovative', 'trendy', 'modern'],
+            'Trustworthy': ['trustworthy', 'reliable', 'dependable'],
+            'Bold': ['bold', 'confident', 'strong'],
+            'Sophisticated': ['sophisticated', 'luxury', 'premium', 'accessible luxury'],
+            'Approachable': ['approachable', 'friendly', 'accessible'],
+            'Expert': ['expert', 'professional', 'authoritative']
+          };
+          
+          const mapped: string[] = [];
+          const claudePersonalitiesLower = claudePersonalities.map(p => p.toLowerCase());
+          
+          for (const [formOption, keywords] of Object.entries(personalityMapping)) {
+            if (keywords.some(keyword => claudePersonalitiesLower.some(cp => cp.includes(keyword)))) {
+              mapped.push(formOption);
+            }
+          }
+          
+          return mapped;
+        };
+        
+        // Auto-populate form fields
+        setFormData(prev => ({
+          ...prev,
+          company: analysis.brand_name || prev.company,
+          brand_questionnaire: {
+            target_audience: analysis.target_audience || prev.brand_questionnaire.target_audience,
+            brand_voice: analysis.brand_voice || prev.brand_questionnaire.brand_voice,
+            brand_personality: Array.isArray(analysis.brand_personality) 
+              ? mapBrandPersonality(analysis.brand_personality)
+              : prev.brand_questionnaire.brand_personality,
+            key_messaging: analysis.key_messaging || prev.brand_questionnaire.key_messaging,
+            competitors: [], // Will be filled manually
+            pain_points: [], // Will be filled manually  
+            unique_value_props: Array.isArray(analysis.unique_value_props) 
+              ? analysis.unique_value_props 
+              : (analysis.unique_value_props ? [analysis.unique_value_props] : prev.brand_questionnaire.unique_value_props),
+            content_preferences: typeof analysis.content_preferences === 'object' 
+              ? JSON.stringify(analysis.content_preferences, null, 2)
+              : (analysis.content_preferences || prev.brand_questionnaire.content_preferences),
+            tone_examples: Array.isArray(analysis.tone_examples) 
+              ? analysis.tone_examples.join(', ')
+              : (analysis.tone_examples || prev.brand_questionnaire.tone_examples)
+          }
+        }));
+        
+        alert('✅ Website analyzed successfully!\n\n🤖 AI auto-filled:\n• Target audience\n• Brand voice\n• Key messaging\n• Brand personality\n• Tone examples\n\nReview and adjust as needed!');
+      } else if (responseData.content) {
+        // Fallback: show raw content for manual copying
+        alert(`Website scraped successfully!\n\nContent preview:\n${responseData.content.substring(0, 200)}...\n\nYou can manually copy relevant information to the brand questionnaire.`);
+      } else {
+        alert('Website scraped but no content extracted. Please fill out brand information manually.');
+      }
     } catch (error) {
       console.error('Website scraping failed:', error);
       alert(`Failed to scrape website: ${error instanceof Error ? error.message : 'Unknown error'}. Please fill in the information manually.`);
@@ -194,7 +244,7 @@ export default function NewClientPage() {
       <div className="flex items-center space-x-4">
         <Link 
           href="/dashboard/clients"
-          className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+          className="flex items-center space-x-2 text-gray-300 hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Back to Clients</span>
@@ -202,19 +252,19 @@ export default function NewClientPage() {
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Add New Client</h1>
-        <p className="text-gray-600 mt-2">Create a comprehensive client profile with brand guidelines for better copy generation.</p>
+        <h1 className="text-3xl font-bold text-white">Add New Client</h1>
+        <p className="text-gray-300 mt-2">Create a comprehensive client profile with brand guidelines for better copy generation.</p>
       </div>
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Basic Information */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Basic Information</h2>
+        <div className="bg-dark-800/50 backdrop-blur-xl border border-dark-700/50 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-white mb-6">Basic Information</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Client Name *
               </label>
               <input
@@ -222,39 +272,39 @@ export default function NewClientPage() {
                 required
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Client or contact name"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Email
               </label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="client@company.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Company Name
               </label>
               <input
                 type="text"
                 value={formData.company}
                 onChange={(e) => handleInputChange('company', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Company or brand name"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Website URL *
               </label>
               <div className="flex space-x-2">
@@ -263,7 +313,7 @@ export default function NewClientPage() {
                   required
                   value={formData.website_url}
                   onChange={(e) => handleInputChange('website_url', e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="flex-1 px-3 py-2 border border-dark-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="https://example.com"
                 />
                 <button
@@ -280,7 +330,7 @@ export default function NewClientPage() {
                   <span>{isScrapingWebsite ? 'Scraping...' : 'Auto-Fill'}</span>
                 </button>
               </div>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-gray-400 mt-1">
                 Click "Auto-Fill" to automatically extract brand voice and examples from the website
               </p>
             </div>
@@ -288,12 +338,12 @@ export default function NewClientPage() {
         </div>
 
         {/* Brand Questionnaire */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Brand Questionnaire</h2>
+        <div className="bg-dark-800/50 backdrop-blur-xl border border-dark-700/50 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-white mb-6">Brand Questionnaire</h2>
           
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Target Audience *
               </label>
               <textarea
@@ -301,13 +351,13 @@ export default function NewClientPage() {
                 value={formData.brand_questionnaire.target_audience}
                 onChange={(e) => handleQuestionnaireChange('target_audience', e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Describe the primary target audience (demographics, psychographics, behaviors...)"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Brand Voice & Tone *
               </label>
               <textarea
@@ -315,13 +365,13 @@ export default function NewClientPage() {
                 value={formData.brand_questionnaire.brand_voice}
                 onChange={(e) => handleQuestionnaireChange('brand_voice', e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="How should the brand sound? (Professional, casual, authoritative, friendly...)"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Brand Personality
               </label>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
@@ -332,8 +382,8 @@ export default function NewClientPage() {
                     onClick={() => handlePersonalityToggle(personality)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       formData.brand_questionnaire.brand_personality.includes(personality)
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-purple-gradient text-white'
+                        : 'bg-dark-700/30 text-gray-300 hover:bg-dark-600/50'
                     }`}
                   >
                     {personality}
@@ -343,7 +393,7 @@ export default function NewClientPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Key Messaging & Value Propositions *
               </label>
               <textarea
@@ -351,80 +401,80 @@ export default function NewClientPage() {
                 value={formData.brand_questionnaire.key_messaging}
                 onChange={(e) => handleQuestionnaireChange('key_messaging', e.target.value)}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="What are the main messages and value propositions? What makes this brand unique?"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Main Competitors
                 </label>
                 <input
                   type="text"
                   value={formData.brand_questionnaire.competitors.join(', ')}
                   onChange={(e) => handleArrayFieldChange('competitors', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Competitor 1, Competitor 2, Competitor 3"
                 />
-                <p className="text-sm text-gray-500 mt-1">Separate with commas</p>
+                <p className="text-sm text-gray-400 mt-1">Separate with commas</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Customer Pain Points
                 </label>
                 <input
                   type="text"
                   value={formData.brand_questionnaire.pain_points.join(', ')}
                   onChange={(e) => handleArrayFieldChange('pain_points', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Problem 1, Problem 2, Problem 3"
                 />
-                <p className="text-sm text-gray-500 mt-1">What problems does the brand solve?</p>
+                <p className="text-sm text-gray-400 mt-1">What problems does the brand solve?</p>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Unique Value Propositions
               </label>
               <input
                 type="text"
                 value={formData.brand_questionnaire.unique_value_props.join(', ')}
                 onChange={(e) => handleArrayFieldChange('unique_value_props', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Unique benefit 1, Unique benefit 2, Unique benefit 3"
               />
-              <p className="text-sm text-gray-500 mt-1">What makes this brand different from competitors?</p>
+              <p className="text-sm text-gray-400 mt-1">What makes this brand different from competitors?</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Content Preferences
               </label>
               <textarea
                 value={formData.brand_questionnaire.content_preferences}
                 onChange={(e) => handleQuestionnaireChange('content_preferences', e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Any specific content preferences, do's and don'ts, or style guidelines..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Tone Examples from Website
               </label>
               <textarea
                 value={formData.brand_questionnaire.tone_examples}
                 onChange={(e) => handleQuestionnaireChange('tone_examples', e.target.value)}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-dark-600 rounded-lg bg-dark-700 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Paste examples of copy from their website that demonstrates their brand voice..."
               />
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-gray-400 mt-1">
                 {isScrapingWebsite ? 'This will be auto-filled when you scrape the website above' : 'Examples of existing copy that shows their brand voice'}
               </p>
             </div>
@@ -435,7 +485,7 @@ export default function NewClientPage() {
         <div className="flex justify-between items-center">
           <Link 
             href="/dashboard/clients"
-            className="text-gray-600 hover:text-gray-900"
+            className="text-gray-300 hover:text-white"
           >
             Cancel
           </Link>
@@ -443,7 +493,7 @@ export default function NewClientPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center space-x-2"
+            className="bg-purple-gradient text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center space-x-2"
           >
             {isLoading ? (
               <Loader className="h-4 w-4 animate-spin" />

@@ -333,6 +333,59 @@ export class DatabaseService {
     }
   }
 
+  async updateClientNote(id: string, updates: { note: string; category: string }): Promise<any> {
+    console.log('🗄️ DB SERVICE: Starting updateClientNote for ID:', id);
+    
+    try {
+      console.log('📝 DB SERVICE: Note update data:', updates);
+
+      const { data, error } = await this.supabase
+        .from('client_notes')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+      
+      console.log('📊 DB SERVICE: Supabase response:', { data, error });
+      
+      if (error) {
+        console.error('❌ DB SERVICE: Note update error:', error);
+        throw error;
+      }
+      
+      console.log('✅ DB SERVICE: Note updated successfully');
+      return data;
+      
+    } catch (dbError) {
+      console.error('💥 DB SERVICE: Exception in updateClientNote:', dbError);
+      throw dbError;
+    }
+  }
+
+  async deleteClientNote(id: string): Promise<void> {
+    console.log('🗄️ DB SERVICE: Starting deleteClientNote for ID:', id);
+    
+    try {
+      const { error } = await this.supabase
+        .from('client_notes')
+        .delete()
+        .eq('id', id);
+      
+      console.log('📊 DB SERVICE: Delete response:', { error });
+      
+      if (error) {
+        console.error('❌ DB SERVICE: Note delete error:', error);
+        throw error;
+      }
+      
+      console.log('✅ DB SERVICE: Note deleted successfully');
+      
+    } catch (dbError) {
+      console.error('💥 DB SERVICE: Exception in deleteClientNote:', dbError);
+      throw dbError;
+    }
+  }
+
   // Scraped content operations
   async getScrapedContent(clientId: string): Promise<any[]> {
     const { data, error } = await this.supabase
@@ -360,5 +413,34 @@ export class DatabaseService {
     
     if (error) throw error;
     return data;
+  }
+
+  // Save copy data for shareable links
+  async saveCopy(copyData: {
+    campaign_name: string;
+    client: string;
+    send_date: string;
+    subject_lines: string[];
+    preview_text: string[];
+    email_blocks: any[];
+    selected_subject: number;
+    selected_preview: number;
+    airtable_id?: string;
+  }): Promise<any> {
+    // Import and use file-based storage
+    const { CopyStorage } = await import('@/lib/copy-storage');
+    return await CopyStorage.saveCopy(copyData);
+  }
+
+  async getSavedCopy(id: string): Promise<any> {
+    // Import and use file-based storage
+    const { CopyStorage } = await import('@/lib/copy-storage');
+    return await CopyStorage.getCopy(id);
+  }
+
+  async updateSavedCopy(id: string, updates: any): Promise<any> {
+    // Mock update for now
+    console.log('✅ SUPABASE: Mock copy updated:', id);
+    return { id, ...updates, updated_at: new Date().toISOString() };
   }
 }

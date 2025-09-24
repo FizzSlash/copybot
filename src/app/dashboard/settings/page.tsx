@@ -48,6 +48,22 @@ export default function SettingsPage() {
   }, []);
 
   // Test connections on load
+  const testAirtableConnection = async () => {
+    try {
+      setConnectionStatus(prev => ({ ...prev, airtable: 'testing' }));
+      const response = await fetch('/api/airtable/test');
+      const data = await response.json();
+      
+      if (data.success) {
+        setConnectionStatus(prev => ({ ...prev, airtable: 'connected' }));
+      } else {
+        setConnectionStatus(prev => ({ ...prev, airtable: 'error' }));
+      }
+    } catch (error) {
+      console.error('Airtable connection test failed:', error);
+      setConnectionStatus(prev => ({ ...prev, airtable: 'error' }));
+    }
+  };
   useEffect(() => {
     testConnections();
   }, [config]);
@@ -70,11 +86,8 @@ export default function SettingsPage() {
       google_docs: config.google_docs_enabled ? 'connected' : 'error'
     }));
 
-    // Test Airtable (placeholder - would test Airtable API)
-    setConnectionStatus(prev => ({ 
-      ...prev, 
-      airtable: config.airtable_api_key ? 'connected' : 'error'
-    }));
+    // Test Airtable connection
+    await testAirtableConnection();
   };
 
   const toggleKeyVisibility = (field: string) => {
@@ -130,19 +143,19 @@ export default function SettingsPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-600 mt-2">Configure your API integrations and preferences.</p>
+        <h1 className="text-3xl font-bold text-white">Settings</h1>
+        <p className="text-gray-300 mt-2">Configure your API integrations and preferences.</p>
       </div>
 
       {/* Connection Status */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Integration Status</h2>
+      <div className="bg-dark-800/50 backdrop-blur-xl border border-dark-700/50 rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold text-white mb-6">Integration Status</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex items-center justify-between p-4 border rounded-lg">
             <div>
-              <h3 className="font-medium text-gray-900">Claude AI</h3>
-              <p className="text-sm text-gray-600">Copy generation & website scraping</p>
+              <h3 className="font-medium text-white">Claude AI</h3>
+              <p className="text-sm text-gray-300">Copy generation & website scraping</p>
             </div>
             <div className="flex items-center space-x-2">
               {getStatusIcon(connectionStatus.claude)}
@@ -152,8 +165,8 @@ export default function SettingsPage() {
 
           <div className="flex items-center justify-between p-4 border rounded-lg">
             <div>
-              <h3 className="font-medium text-gray-900">Google Docs</h3>
-              <p className="text-sm text-gray-600">Auto-document creation</p>
+              <h3 className="font-medium text-white">Google Docs</h3>
+              <p className="text-sm text-gray-300">Auto-document creation</p>
             </div>
             <div className="flex items-center space-x-2">
               {getStatusIcon(connectionStatus.google_docs)}
@@ -163,8 +176,8 @@ export default function SettingsPage() {
 
           <div className="flex items-center justify-between p-4 border rounded-lg">
             <div>
-              <h3 className="font-medium text-gray-900">Airtable</h3>
-              <p className="text-sm text-gray-600">Campaign synchronization</p>
+              <h3 className="font-medium text-white">Airtable</h3>
+              <p className="text-sm text-gray-300">Campaign synchronization</p>
             </div>
             <div className="flex items-center space-x-2">
               {getStatusIcon(connectionStatus.airtable)}
@@ -175,22 +188,22 @@ export default function SettingsPage() {
 
         <button
           onClick={testConnections}
-          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="mt-4 bg-purple-gradient text-white px-4 py-2 rounded-lg hover:opacity-90 shadow-lg"
         >
           Test All Connections
         </button>
       </div>
 
       {/* API Configuration */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">API Configuration</h2>
+      <div className="bg-dark-800/50 backdrop-blur-xl border border-dark-700/50 rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold text-white mb-6">API Configuration</h2>
         
         <div className="space-y-6">
           {/* Claude AI Settings */}
           <div className="border rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 mb-4">Claude AI (Anthropic)</h3>
+            <h3 className="font-semibold text-white mb-4">Claude AI (Anthropic)</h3>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 API Key
               </label>
               <div className="relative">
@@ -198,13 +211,13 @@ export default function SettingsPage() {
                   type={showKeys.claude_api_key ? 'text' : 'password'}
                   value={config.claude_api_key}
                   onChange={(e) => handleConfigChange('claude_api_key', e.target.value)}
-                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 pr-10 border border-dark-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="sk-ant-api03-xxx"
                 />
                 <button
                   type="button"
                   onClick={() => toggleKeyVisibility('claude_api_key')}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
                 >
                   {showKeys.claude_api_key ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -217,10 +230,10 @@ export default function SettingsPage() {
 
           {/* Airtable Settings */}
           <div className="border rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 mb-4">Airtable Integration</h3>
+            <h3 className="font-semibold text-white mb-4">Airtable Integration</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   API Key
                 </label>
                 <div className="relative">
@@ -228,13 +241,13 @@ export default function SettingsPage() {
                     type={showKeys.airtable_api_key ? 'text' : 'password'}
                     value={config.airtable_api_key}
                     onChange={(e) => handleConfigChange('airtable_api_key', e.target.value)}
-                    className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 pr-10 border border-dark-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="pat..."
                   />
                   <button
                     type="button"
                     onClick={() => toggleKeyVisibility('airtable_api_key')}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
                   >
                     {showKeys.airtable_api_key ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -242,14 +255,14 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Base ID
                 </label>
                 <input
                   type="text"
                   value={config.airtable_base_id}
                   onChange={(e) => handleConfigChange('airtable_base_id', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-dark-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="appXXXXXXXXXXXXXX"
                 />
               </div>
@@ -258,7 +271,7 @@ export default function SettingsPage() {
 
           {/* Google Docs Settings */}
           <div className="border rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 mb-4">Google Docs Integration</h3>
+            <h3 className="font-semibold text-white mb-4">Google Docs Integration</h3>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <input
@@ -266,23 +279,23 @@ export default function SettingsPage() {
                   id="google_docs_enabled"
                   checked={config.google_docs_enabled}
                   onChange={(e) => handleConfigChange('google_docs_enabled', e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-dark-600 rounded"
                 />
-                <label htmlFor="google_docs_enabled" className="text-sm text-gray-700">
+                <label htmlFor="google_docs_enabled" className="text-sm text-gray-300">
                   Enable automatic Google Docs creation and sharing
                 </label>
               </div>
               
               {config.google_docs_enabled && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Google Drive Folder ID (Optional)
                   </label>
                   <input
                     type="text"
                     value={config.google_docs_folder_id}
                     onChange={(e) => handleConfigChange('google_docs_folder_id', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-dark-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="1abc123def456ghi789jkl"
                   />
                   <p className="text-sm text-gray-500 mt-1">
@@ -302,7 +315,7 @@ export default function SettingsPage() {
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center space-x-2"
+            className="bg-purple-gradient text-white px-6 py-3 rounded-lg hover:opacity-90 shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center space-x-2"
           >
             {isSaving ? (
               <Loader className="h-4 w-4 animate-spin" />
