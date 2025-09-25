@@ -167,6 +167,10 @@ function GenerateAirtableCopyPageContent() {
   const [abTestVariants, setAbTestVariants] = useState<ABTestVariant[]>([]);
   const [feedbackText, setFeedbackText] = useState('');
   const [isRegenerating, setIsRegenerating] = useState(false);
+  
+  // AI Revision states
+  const [showRevisionPrompt, setShowRevisionPrompt] = useState(false);
+  const [revisionText, setRevisionText] = useState('');
   const [activeVariant, setActiveVariant] = useState<'original' | string>('original');
   const [googleDocUrl, setGoogleDocUrl] = useState<string>('');
   const [showFinalizeConfirm, setShowFinalizeConfirm] = useState(false);
@@ -349,6 +353,67 @@ function GenerateAirtableCopyPageContent() {
       setIsGenerating(false);
       setCurrentStep(null);
       console.log('🏁 COPY GEN: Generation completed');
+    }
+  };
+
+  // AI Revision handler for campaigns
+  const handleCopyRevision = async () => {
+    if (!revisionText.trim() || !editedCopy || !campaignContext) return;
+    
+    setIsRegenerating(true);
+    setShowRevisionPrompt(false);
+    
+    try {
+      console.log('🔄 CAMPAIGN REVISION: Revising copy with feedback:', revisionText);
+      
+      const revisionResponse = await fetch('/api/generate-copy-simple', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          campaign_context: JSON.stringify({
+            campaign: {
+              name: campaignContext.campaignName,
+              client: campaignContext.client,
+              sendDate: campaignContext.sendDate,
+              notes: campaignContext.notes,
+              stage: campaignContext.stage
+            },
+            client: client ? {
+              name: client.name,
+              company: client.company,
+              website: client.website_url,
+              brandGuidelines: client.brand_questionnaire
+            } : null
+          }),
+          copy_type: generationRequest.copy_type,
+          tone: generationRequest.tone,
+          length: generationRequest.length,
+          focus: generationRequest.focus,
+          additional_context: generationRequest.additional_context,
+          revision_feedback: revisionText,
+          current_copy: editedCopy,
+          feedback_mode: true
+        }),
+      });
+
+      if (!revisionResponse.ok) {
+        throw new Error('Failed to generate revised copy');
+      }
+
+      const revisedCopy = await revisionResponse.json();
+      console.log('✅ CAMPAIGN REVISION: Copy revised successfully');
+      
+      setEditedCopy(revisedCopy);
+      setRevisionText('');
+      
+      console.log('✅ CAMPAIGN REVISION: Copy updated successfully');
+    } catch (error) {
+      console.error('❌ CAMPAIGN REVISION: Error:', error);
+      setShowRevisionPrompt(true);
+    } finally {
+      setIsRegenerating(false);
     }
   };
 
@@ -691,6 +756,23 @@ function GenerateAirtableCopyPageContent() {
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
+                    <button
+                      onClick={() => setShowRevisionPrompt(true)}
+                      disabled={isRegenerating}
+                      className="px-3 py-2 bg-purple-gradient text-white rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                    >
+                      {isRegenerating ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                          <span>Revising...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Edit className="h-4 w-4" />
+                          <span>Revise with AI</span>
+                        </>
+                      )}
+                    </button>
                     <button
                       onClick={() => setShowFinalizeConfirm(true)}
                       disabled={isGenerating}
@@ -1201,6 +1283,190 @@ function GenerateAirtableCopyPageContent() {
           )}
         </div>
       </div>
+
+      {/* AI Revision Modal */}
+      {showRevisionPrompt && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50">
+          <div className="bg-dark-800 backdrop-blur-xl border border-dark-700 rounded-lg p-6 max-w-lg w-full">
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Revise Copy with AI
+            </h3>
+            <p className="text-gray-300 text-sm mb-4">
+              Tell the AI what you'd like to change about this email copy. Be specific about your requirements.
+            </p>
+            
+            <textarea
+              value={revisionText}
+              onChange={(e) => setRevisionText(e.target.value)}
+              placeholder="e.g., 'I need 3 reviews instead of 1' or 'Add more urgency' or 'Focus on the premium products'"
+              className="w-full p-3 border border-dark-600 rounded-lg bg-dark-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"
+              rows={4}
+            />
+            
+            <div className="flex items-center justify-end space-x-3 mt-6">
+              <button 
+                onClick={() => {
+                  setShowRevisionPrompt(false);
+                  setRevisionText('');
+                }}
+                className="px-4 py-2 border border-dark-600 rounded-lg text-gray-300 hover:bg-dark-600/50"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleCopyRevision}
+                disabled={!revisionText.trim() || isRegenerating}
+                className="px-4 py-2 bg-purple-gradient text-white rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+              >
+                {isRegenerating ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <span>Revising...</span>
+                  </>
+                ) : (
+                  <>
+                    <Edit className="h-4 w-4" />
+                    <span>Revise Copy</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Wrapper with Suspense boundary for useSearchParams
+export default function GenerateAirtableCopyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-dark-800 via-dark-900 to-purple-900/20">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading campaign generator...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <GenerateAirtableCopyPageContent />
+    </Suspense>
+  );
+}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Finalize Confirmation */}
+          {showFinalizeConfirm && editedCopy && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center p-6">
+              <div className="bg-dark-800/50 rounded-lg p-6 max-w-md w-full">
+                <h3 className="text-lg font-semibold text-white mb-4">Ready to Finalize?</h3>
+                <p className="text-gray-600 mb-6">
+                  This will create a Google Doc with your copy and update the Airtable record.
+                </p>
+                <div className="flex space-x-4">
+                  <button
+                    onClick={() => setShowFinalizeConfirm(false)}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-300 hover:bg-dark-700/30"
+                  >
+                    Keep Editing
+                  </button>
+                  <button
+                    onClick={finalizeCopy}
+                    disabled={isGenerating}
+                    className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed"
+                  >
+                    {isGenerating && currentStep === 'finalize' ? (
+                      'Creating Doc...'
+                    ) : (
+                      'Finalize & Share'
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Notification System */}
+          <NotificationSystem />
+
+          {/* Empty State */}
+          {!editedCopy && !isGenerating && (
+            <div className="flex-1 flex items-center justify-center text-center p-6">
+              <div>
+                <div className="text-gray-400 mb-4">
+                  <FileText className="h-16 w-16 mx-auto" />
+                </div>
+                <h3 className="text-lg font-medium text-white mb-2">Ready to Generate Copy</h3>
+                <p className="text-gray-600 mb-4">
+                  Configure your settings on the left and click "Generate Email Copy" to create your campaign content.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* AI Revision Modal */}
+      {showRevisionPrompt && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50">
+          <div className="bg-dark-800 backdrop-blur-xl border border-dark-700 rounded-lg p-6 max-w-lg w-full">
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Revise Copy with AI
+            </h3>
+            <p className="text-gray-300 text-sm mb-4">
+              Tell the AI what you'd like to change about this email copy. Be specific about your requirements.
+            </p>
+            
+            <textarea
+              value={revisionText}
+              onChange={(e) => setRevisionText(e.target.value)}
+              placeholder="e.g., 'I need 3 reviews instead of 1' or 'Add more urgency' or 'Focus on the premium products'"
+              className="w-full p-3 border border-dark-600 rounded-lg bg-dark-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"
+              rows={4}
+            />
+            
+            <div className="flex items-center justify-end space-x-3 mt-6">
+              <button 
+                onClick={() => {
+                  setShowRevisionPrompt(false);
+                  setRevisionText('');
+                }}
+                className="px-4 py-2 border border-dark-600 rounded-lg text-gray-300 hover:bg-dark-600/50"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleCopyRevision}
+                disabled={!revisionText.trim() || isRegenerating}
+                className="px-4 py-2 bg-purple-gradient text-white rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+              >
+                {isRegenerating ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <span>Revising...</span>
+                  </>
+                ) : (
+                  <>
+                    <Edit className="h-4 w-4" />
+                    <span>Revise Copy</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

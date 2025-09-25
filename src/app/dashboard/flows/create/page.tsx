@@ -522,7 +522,7 @@ export default function FlowBuilderPage() {
                     onChange={(e) => setEmailCount(parseInt(e.target.value))}
                     className="w-full px-3 py-2 border border-dark-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="text-xs text-gray-300 mt-1">
                     Recommended: {selectedFlowConfig?.defaultEmails} emails for {selectedFlowConfig?.name}
                   </div>
                 </div>
@@ -539,7 +539,7 @@ export default function FlowBuilderPage() {
                     rows={2}
                     className="w-full px-3 py-2 border border-dark-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="text-xs text-gray-300 mt-1">
                     {selectedFlowConfig?.offerStrategy}
                   </div>
                 </div>
@@ -615,7 +615,7 @@ export default function FlowBuilderPage() {
                           </div>
                           <div>
                             <div className="font-medium text-white">{emailStrategy.theme}</div>
-                            <div className="text-sm text-gray-500">Day {emailStrategy.day}</div>
+                            <div className="text-sm text-gray-300">Day {emailStrategy.day}</div>
                           </div>
                         </div>
                         {emailStrategy.hasOffer && (
@@ -843,7 +843,7 @@ export default function FlowBuilderPage() {
                   >
                     Email {index + 1}
                     {email.hasOffer && <span className="ml-1 text-green-600">🎁</span>}
-                    <div className="text-xs text-gray-500">Day {email.day}</div>
+                    <div className="text-xs text-gray-300">Day {email.day}</div>
                   </button>
                 ))}
               </div>
@@ -852,17 +852,30 @@ export default function FlowBuilderPage() {
             {/* Active Email Content */}
             {generatedFlow.emails?.[activeEmailIndex] && (
               <div className="p-6">
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    {generatedFlow.emails[activeEmailIndex].theme}
-                  </h3>
-                  <div className="text-sm text-gray-400">
-                    Day {generatedFlow.emails[activeEmailIndex].day} • 
-                    {generatedFlow.emails[activeEmailIndex].hasOffer ? ' 🎁 Includes Offer' : ' No Offer'}
-                    {generatedFlow.emails[activeEmailIndex].error && (
-                      <span className="ml-2 text-red-600">⚠️ {generatedFlow.emails[activeEmailIndex].error}</span>
-                    )}
+                <div className="mb-4 flex items-start justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-2">
+                      {generatedFlow.emails[activeEmailIndex].theme}
+                    </h3>
+                    <div className="text-sm text-gray-400">
+                      Day {generatedFlow.emails[activeEmailIndex].day} • 
+                      {generatedFlow.emails[activeEmailIndex].hasOffer ? ' 🎁 Includes Offer' : ' No Offer'}
+                      {generatedFlow.emails[activeEmailIndex].error && (
+                        <span className="ml-2 text-red-600">⚠️ {generatedFlow.emails[activeEmailIndex].error}</span>
+                      )}
+                    </div>
                   </div>
+                  
+                  <button
+                    onClick={() => {
+                      setRevisionEmailIndex(activeEmailIndex);
+                      setShowRevisionPrompt(true);
+                    }}
+                    className="px-3 py-1 text-sm bg-purple-gradient text-white rounded-lg hover:opacity-90 flex items-center space-x-1"
+                  >
+                    <Edit className="h-3 w-3" />
+                    <span>Revise</span>
+                  </button>
                 </div>
 
                 {emailViewMode === 'preview' ? (
@@ -871,7 +884,7 @@ export default function FlowBuilderPage() {
                     {/* Subject Lines */}
                     <div className="mb-6">
                       <h4 className="font-medium text-white mb-3">Subject Line:</h4>
-                      <div className="text-lg font-medium text-gray-800">
+                      <div className="text-lg font-medium text-white">
                         {generatedFlow.emails[activeEmailIndex].copyData.subject_lines[0]}
                       </div>
                     </div>
@@ -1014,14 +1027,14 @@ export default function FlowBuilderPage() {
                                   <div className="text-blue-600 text-sm font-medium">{block.cta}</div>
                                 )}
                                 {block.link && (
-                                  <div className="text-gray-500 text-xs mt-1">{block.link}</div>
+                                  <div className="text-gray-300 text-xs mt-1">{block.link}</div>
                                 )}
                               </div>
                             ) : block.type === 'cta' ? (
                               <div>
                                 <div className="text-blue-600 font-medium">{block.content}</div>
                                 {block.link && (
-                                  <div className="text-gray-500 text-xs mt-1">{block.link}</div>
+                                  <div className="text-gray-300 text-xs mt-1">{block.link}</div>
                                 )}
                               </div>
                             ) : block.type === 'pic' ? (
@@ -1084,6 +1097,19 @@ export default function FlowBuilderPage() {
                     </>
                   ) : (
                     <>
+                      <MessageSquare className="h-4 w-4" />
+                      <span>Revise Email</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
                       <MessageSquare className="h-4 w-4" />
                       <span>Revise Email</span>
                     </>
