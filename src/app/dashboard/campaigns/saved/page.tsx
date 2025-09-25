@@ -235,7 +235,7 @@ export default function SavedCopiesPage() {
                     {editingCopyId === copy.id ? (
                       <input
                         type="text"
-                        defaultValue={copy.subject_lines[copy.selected_subject] || copy.subject_lines[0]}
+                        defaultValue={copy.subject_lines?.[copy.selected_subject] || copy.subject_lines?.[0] || ''}
                         className="bg-dark-600 text-white rounded px-2 py-1 text-sm w-full"
                         onBlur={(e) => {
                           const updatedSubjectLines = [...copy.subject_lines];
@@ -252,7 +252,7 @@ export default function SavedCopiesPage() {
                       />
                     ) : (
                       <p className="text-white text-sm">
-                        {copy.subject_lines[copy.selected_subject] || copy.subject_lines[0]}
+                        {copy.subject_lines?.[copy.selected_subject] || copy.subject_lines?.[0] || 'No subject line'}
                       </p>
                     )}
                   </div>
@@ -261,7 +261,7 @@ export default function SavedCopiesPage() {
                     <h4 className="text-sm font-medium text-gray-400 mb-1">Preview Text:</h4>
                     {editingCopyId === copy.id ? (
                       <textarea
-                        defaultValue={copy.preview_text[copy.selected_preview] || copy.preview_text[0]}
+                        defaultValue={copy.preview_text?.[copy.selected_preview] || copy.preview_text?.[0] || ''}
                         className="bg-dark-600 text-gray-300 rounded px-2 py-1 text-sm w-full resize-none"
                         rows={2}
                         onBlur={(e) => {
@@ -272,7 +272,7 @@ export default function SavedCopiesPage() {
                       />
                     ) : (
                       <p className="text-gray-300 text-sm">
-                        {copy.preview_text[copy.selected_preview] || copy.preview_text[0]}
+                        {copy.preview_text?.[copy.selected_preview] || copy.preview_text?.[0] || 'No preview text'}
                       </p>
                     )}
                   </div>

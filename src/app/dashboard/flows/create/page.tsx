@@ -378,6 +378,11 @@ export default function FlowBuilderPage() {
       const revisedCopy = await revisionResponse.json();
       console.log(`✅ FLOW REVISION: Email ${revisionEmailIndex + 1} revised successfully`);
       
+      // Validate response structure
+      if (!revisedCopy.subject_lines || !revisedCopy.preview_text || !revisedCopy.email_blocks) {
+        throw new Error('Invalid response structure from AI revision');
+      }
+      
       // Update the specific email in the flow
       const updatedFlow = { ...generatedFlow };
       updatedFlow.emails[revisionEmailIndex] = {
@@ -885,7 +890,7 @@ export default function FlowBuilderPage() {
                     <div className="mb-6">
                       <h4 className="font-medium text-white mb-3">Subject Line:</h4>
                       <div className="text-lg font-medium text-white">
-                        {generatedFlow.emails[activeEmailIndex].copyData.subject_lines[0]}
+                        {generatedFlow.emails[activeEmailIndex]?.copyData?.subject_lines?.[0] || 'No subject line'}
                       </div>
                     </div>
 
@@ -893,7 +898,7 @@ export default function FlowBuilderPage() {
                     <div className="mb-6">
                       <h4 className="font-medium text-white mb-3">Preview Text:</h4>
                       <div className="text-gray-400">
-                        {generatedFlow.emails[activeEmailIndex].copyData.preview_text[0]}
+                        {generatedFlow.emails[activeEmailIndex]?.copyData?.preview_text?.[0] || 'No preview text'}
                       </div>
                     </div>
                   </>
@@ -904,7 +909,7 @@ export default function FlowBuilderPage() {
                     <div className="mb-6">
                       <h4 className="font-medium text-white mb-3">Subject Lines</h4>
                       <div className="border border-dark-600 rounded-lg overflow-hidden">
-                        {generatedFlow.emails[activeEmailIndex].copyData.subject_lines.map((subject: string, index: number) => (
+                        {generatedFlow.emails[activeEmailIndex]?.copyData?.subject_lines?.map((subject: string, index: number) => (
                           <div key={index} className={`flex border-b border-dark-700/50 last:border-b-0 ${index % 2 === 0 ? 'bg-dark-800/50' : 'bg-dark-700/30'}`}>
                             <div className="w-20 p-3 bg-dark-600 border-r border-dark-700/50 font-semibold text-white text-sm flex items-center">
                               <input type="radio" name={`subject-${activeEmailIndex}`} defaultChecked={index === 0} className="text-blue-600" />
@@ -926,7 +931,7 @@ export default function FlowBuilderPage() {
                     <div className="mb-6">
                       <h4 className="font-medium text-white mb-3">Preview Text</h4>
                       <div className="border border-dark-600 rounded-lg overflow-hidden">
-                        {generatedFlow.emails[activeEmailIndex].copyData.preview_text.map((preview: string, index: number) => (
+                        {generatedFlow.emails[activeEmailIndex]?.copyData?.preview_text?.map((preview: string, index: number) => (
                           <div key={index} className={`flex border-b border-dark-700/50 last:border-b-0 ${index % 2 === 0 ? 'bg-dark-800/50' : 'bg-dark-700/30'}`}>
                             <div className="w-20 p-3 bg-dark-600 border-r border-dark-700/50 font-semibold text-white text-sm flex items-center">
                               <input type="radio" name={`preview-${activeEmailIndex}`} defaultChecked={index === 0} className="text-blue-600" />
@@ -950,7 +955,7 @@ export default function FlowBuilderPage() {
                 <div>
                   <h4 className="font-medium text-white mb-3">Email Content:</h4>
                   <div className="border border-dark-600 rounded-lg overflow-hidden">
-                    {generatedFlow.emails[activeEmailIndex].copyData.email_blocks.map((block: any, index: number) => (
+                      {generatedFlow.emails[activeEmailIndex]?.copyData?.email_blocks?.map((block: any, index: number) => (
                       <div
                         key={index}
                         className={`flex border-b border-dark-700/50 last:border-b-0 ${index % 2 === 0 ? 'bg-dark-800/50' : 'bg-dark-700/30'}`}

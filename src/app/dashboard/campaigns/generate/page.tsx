@@ -131,16 +131,16 @@ function EmailPreview({ copy, selectedSubject, selectedPreview }: {
       {/* Email Headers */}
       <div className="mb-6">
         <div className="text-lg font-semibold text-white mb-2">
-          Subject Line: {copy.subject_lines[selectedSubject] || copy.subject_lines[0]}
+          Subject Line: {copy.subject_lines?.[selectedSubject] || copy.subject_lines?.[0] || 'No subject line'}
         </div>
         <div className="text-gray-600">
-          Preview text: {copy.preview_text[selectedPreview] || copy.preview_text[0]}
+          Preview text: {copy.preview_text?.[selectedPreview] || copy.preview_text?.[0] || 'No preview text'}
         </div>
       </div>
 
       {/* Email Content Table */}
       <div className="border border-gray-300 rounded-lg overflow-hidden">
-        {copy.email_blocks.map((block, index) => (
+        {copy.email_blocks?.map((block, index) => (
           <div key={index} className={`flex border-b border-dark-700/50 ${index % 2 === 0 ? 'bg-dark-800/50' : 'bg-dark-700/30'} last:border-b-0`}>
             <div className="w-32 p-3 bg-dark-600 border-r border-dark-700/50 font-semibold text-white text-sm uppercase">
               {block.type}
@@ -405,6 +405,11 @@ function GenerateAirtableCopyPageContent() {
       const revisedCopy = await revisionResponse.json();
       console.log('✅ CAMPAIGN REVISION: Copy revised successfully');
       
+      // Validate response structure
+      if (!revisedCopy.subject_lines || !revisedCopy.preview_text || !revisedCopy.email_blocks) {
+        throw new Error('Invalid response structure from AI revision');
+      }
+      
       setEditedCopy(revisedCopy);
       setRevisionText('');
       
@@ -456,8 +461,8 @@ function GenerateAirtableCopyPageContent() {
     
     try {
       console.log('🔄 COPY GEN: Finalizing copy...');
-      console.log('📊 COPY GEN: Selected subject:', editedCopy.subject_lines[selectedSubject]);
-      console.log('📊 COPY GEN: Selected preview:', editedCopy.preview_text[selectedPreview]);
+        console.log('📊 COPY GEN: Selected subject:', editedCopy.subject_lines?.[selectedSubject]);
+        console.log('📊 COPY GEN: Selected preview:', editedCopy.preview_text?.[selectedPreview]);
       console.log('📊 COPY GEN: Email blocks:', editedCopy.email_blocks?.length);
       
       const finalizeResponse = await fetch('/api/finalize-copy', {
@@ -804,7 +809,7 @@ function GenerateAirtableCopyPageContent() {
                     <div className="mb-6">
                       <h3 className="font-medium text-white mb-3">Subject Lines</h3>
                       <div className="border border-gray-300 rounded-lg overflow-hidden">
-                        {editedCopy.subject_lines.map((subject, index) => (
+                        {editedCopy.subject_lines?.map((subject, index) => (
                           <div key={index} className={`flex border-b border-dark-700/50 last:border-b-0 ${index % 2 === 0 ? 'bg-dark-800/50' : 'bg-dark-700/30'}`}>
                             <div className="w-20 p-3 bg-dark-600 border-r border-dark-700/50 font-semibold text-white text-sm flex items-center">
                               <input
@@ -836,7 +841,7 @@ function GenerateAirtableCopyPageContent() {
                     <div className="mb-6">
                       <h3 className="font-medium text-white mb-3">Preview Text</h3>
                       <div className="border border-gray-300 rounded-lg overflow-hidden">
-                        {editedCopy.preview_text.map((preview, index) => (
+                        {editedCopy.preview_text?.map((preview, index) => (
                           <div key={index} className={`flex border-b border-dark-700/50 last:border-b-0 ${index % 2 === 0 ? 'bg-dark-800/50' : 'bg-dark-700/30'}`}>
                             <div className="w-20 p-3 bg-dark-600 border-r border-dark-700/50 font-semibold text-white text-sm flex items-center">
                               <input
@@ -868,7 +873,7 @@ function GenerateAirtableCopyPageContent() {
                     <div>
                       <h3 className="font-medium text-white mb-3">Email Content Blocks</h3>
                       <div className="border border-gray-300 rounded-lg overflow-hidden">
-                        {editedCopy.email_blocks.map((block, index) => (
+                        {editedCopy.email_blocks?.map((block, index) => (
                           <div
                             key={index}
                             draggable

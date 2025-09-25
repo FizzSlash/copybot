@@ -367,20 +367,41 @@ ${flow_context ? `
         }
       }
 
-      // Clean up the parsed response
+      // Clean up the parsed response with comprehensive validation
       if (parsedResponse) {
-        // Ensure subject_lines and preview_text are arrays
+        // Ensure subject_lines is a valid array
         if (typeof parsedResponse.subject_lines === 'string') {
           parsedResponse.subject_lines = [parsedResponse.subject_lines];
         }
+        if (!Array.isArray(parsedResponse.subject_lines) || parsedResponse.subject_lines.length === 0) {
+          parsedResponse.subject_lines = ['Email Subject'];
+        }
+
+        // Ensure preview_text is a valid array
         if (typeof parsedResponse.preview_text === 'string') {
           parsedResponse.preview_text = [parsedResponse.preview_text];
         }
-
-        // Ensure email_blocks is an array
-        if (!Array.isArray(parsedResponse.email_blocks)) {
-          parsedResponse.email_blocks = [];
+        if (!Array.isArray(parsedResponse.preview_text) || parsedResponse.preview_text.length === 0) {
+          parsedResponse.preview_text = ['Email preview text'];
         }
+
+        // Ensure email_blocks is a valid array
+        if (!Array.isArray(parsedResponse.email_blocks) || parsedResponse.email_blocks.length === 0) {
+          parsedResponse.email_blocks = [
+            { type: 'header', content: 'Email Header' },
+            { type: 'body', content: 'Email content will appear here.' }
+          ];
+        }
+      } else {
+        // Create default structure if parsing completely failed
+        parsedResponse = {
+          subject_lines: ['Email Subject'],
+          preview_text: ['Email preview text'],
+          email_blocks: [
+            { type: 'header', content: 'Email Header' },
+            { type: 'body', content: 'Email content will appear here.' }
+          ]
+        };
       }
 
       console.log('✅ SIMPLE COPY API: Final parsed structure:', JSON.stringify(parsedResponse, null, 2));
