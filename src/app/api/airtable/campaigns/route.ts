@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AirtableService } from '@/lib/airtable';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   console.log('🔄 AIRTABLE CAMPAIGNS API: Fetching upcoming campaigns...');
   
