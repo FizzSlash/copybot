@@ -1110,16 +1110,3 @@ export default function FlowBuilderPage() {
     </div>
   );
 }
-                      <MessageSquare className="h-4 w-4" />
-                      <span>Revise Email</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
