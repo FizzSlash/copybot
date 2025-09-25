@@ -118,7 +118,13 @@ function generateWelcomeStrategy(emailCount: number, offer: string, client: any,
       hasOffer: true,
       offerType: 'Welcome gift - first order discount',
       products: 'Brand overview, no specific products',
-      keyMessage: `Welcome! Here's your exclusive ${brandName} welcome offer`
+      keyMessage: `Welcome! Here's your exclusive ${brandName} welcome offer`,
+      contentBlocks: [
+        { type: 'hero', description: 'Welcome hero with brand intro and offer', priority: 'high' },
+        { type: 'collection', description: 'Featured product collections showcase', priority: 'high' },
+        { type: 'offer', description: 'Welcome discount and next steps', priority: 'high' },
+        { type: 'contact', description: 'Support info and community links', priority: 'medium' }
+      ]
     },
     {
       emailNumber: 2,
@@ -128,7 +134,12 @@ function generateWelcomeStrategy(emailCount: number, offer: string, client: any,
       hasOffer: true,
       offerType: 'Free shipping offer',
       products: 'None - brand story focus',
-      keyMessage: 'Why we started and what drives us + shipping offer'
+      keyMessage: 'Why we started and what drives us + shipping offer',
+      contentBlocks: [
+        { type: 'story', description: 'Brand origin story and mission', priority: 'high' },
+        { type: 'social-proof', description: 'Customer testimonials and community', count: 2, priority: 'high' },
+        { type: 'offer', description: 'Free shipping offer details', priority: 'medium' }
+      ]
     },
     {
       emailNumber: 3,
@@ -138,7 +149,13 @@ function generateWelcomeStrategy(emailCount: number, offer: string, client: any,
       hasOffer: true,
       offerType: 'Product bundle discount',
       products: 'Top 2-3 bestselling products',
-      keyMessage: 'Find your perfect match + bundle savings'
+      keyMessage: 'Find your perfect match + bundle savings',
+      contentBlocks: [
+        { type: 'education', description: 'Product selection guide', priority: 'high' },
+        { type: 'product', description: 'Featured bestselling products', count: 3, priority: 'high' },
+        { type: 'testimonials', description: 'Product-specific testimonials', count: 2, priority: 'medium' },
+        { type: 'offer', description: 'Bundle discount promotion', priority: 'high' }
+      ]
     },
     {
       emailNumber: 4,
@@ -148,7 +165,13 @@ function generateWelcomeStrategy(emailCount: number, offer: string, client: any,
       hasOffer: true,
       offerType: 'Customer-inspired offer',
       products: 'Most reviewed products',
-      keyMessage: 'Real customer stories + same great deals'
+      keyMessage: 'Real customer stories + same great deals',
+      contentBlocks: [
+        { type: 'testimonials', description: 'Customer success stories', count: 3, priority: 'high' },
+        { type: 'social-proof', description: 'Reviews and ratings showcase', priority: 'high' },
+        { type: 'product', description: 'Most reviewed products', count: 2, priority: 'medium' },
+        { type: 'offer', description: 'Customer-inspired discount', priority: 'medium' }
+      ]
     },
     {
       emailNumber: 5,
@@ -158,7 +181,12 @@ function generateWelcomeStrategy(emailCount: number, offer: string, client: any,
       hasOffer: true,
       offerType: 'Exclusive insider offer',
       products: 'Premium or signature products',
-      keyMessage: 'Exclusive access + insider pricing'
+      keyMessage: 'Exclusive access + insider pricing',
+      contentBlocks: [
+        { type: 'story', description: 'Behind-the-scenes content', priority: 'high' },
+        { type: 'product', description: 'Premium signature products', count: 2, priority: 'high' },
+        { type: 'offer', description: 'Exclusive insider pricing', priority: 'high' }
+      ]
     },
     {
       emailNumber: 6,
@@ -168,7 +196,12 @@ function generateWelcomeStrategy(emailCount: number, offer: string, client: any,
       hasOffer: true,
       offerType: 'Everything discount',
       products: 'Full product range',
-      keyMessage: 'Explore everything with collection-wide savings'
+      keyMessage: 'Explore everything with collection-wide savings',
+      contentBlocks: [
+        { type: 'collection', description: 'Complete product collections overview', priority: 'high' },
+        { type: 'education', description: 'Product category explanations', priority: 'medium' },
+        { type: 'offer', description: 'Collection-wide discount', priority: 'high' }
+      ]
     },
     {
       emailNumber: 7,
@@ -178,7 +211,13 @@ function generateWelcomeStrategy(emailCount: number, offer: string, client: any,
       hasOffer: true,
       offerType: 'Final welcome series offer',
       products: 'Best for beginners or most popular',
-      keyMessage: 'Time to start your journey + best welcome pricing'
+      keyMessage: 'Time to start your journey + best welcome pricing',
+      contentBlocks: [
+        { type: 'hero', description: 'Motivational journey-starting message', priority: 'high' },
+        { type: 'urgency', description: 'Final welcome offer expiration', priority: 'high' },
+        { type: 'product', description: 'Beginner-friendly starter products', count: 2, priority: 'high' },
+        { type: 'contact', description: 'Support and next steps', priority: 'medium' }
+      ]
     }
   ];
 

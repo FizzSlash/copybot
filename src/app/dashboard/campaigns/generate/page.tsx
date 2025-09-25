@@ -31,6 +31,18 @@ interface GenerationRequest {
   additional_context?: string;
 }
 
+interface CampaignStrategy {
+  campaignType: 'promotional' | 'educational';
+  primaryGoal: string;
+  targetAudience: string;
+  contentBlocks: {
+    type: 'hero' | 'testimonials' | 'collection' | 'product' | 'social-proof' | 'urgency' | 'contact' | 'offer' | 'story' | 'education';
+    description: string;
+    count?: number;
+    priority: 'high' | 'medium' | 'low';
+  }[];
+}
+
 interface EmailBlock {
   type: 'header' | 'subheader' | 'body' | 'pic' | 'cta' | 'product' | 'collection';
   content: string;
@@ -171,6 +183,10 @@ function GenerateAirtableCopyPageContent() {
   // AI Revision states
   const [showRevisionPrompt, setShowRevisionPrompt] = useState(false);
   const [revisionText, setRevisionText] = useState('');
+  
+  // Campaign Strategy states
+  const [campaignStrategy, setCampaignStrategy] = useState<CampaignStrategy | null>(null);
+  const [showStrategyConfig, setShowStrategyConfig] = useState(false);
   const [activeVariant, setActiveVariant] = useState<'original' | string>('original');
   const [googleDocUrl, setGoogleDocUrl] = useState<string>('');
   const [showFinalizeConfirm, setShowFinalizeConfirm] = useState(false);
@@ -291,7 +307,7 @@ function GenerateAirtableCopyPageContent() {
           name: campaignContext.campaignName,
           client: campaignContext.client,
           sendDate: campaignContext.sendDate,
-          notes: campaignContext.notes,
+          notes: `${campaignContext.notes}${campaignStrategy ? `\n\nCAMPAIGN STRATEGY:\nGoal: ${campaignStrategy.primaryGoal}\nAudience: ${campaignStrategy.targetAudience}\n\nCONTENT BLOCKS STRATEGY:\n${campaignStrategy.contentBlocks.map(block => `- ${block.type.toUpperCase()}: ${block.description}${block.count ? ` (${block.count} items)` : ''} [${block.priority} priority]`).join('\n')}` : ''}`,
           stage: campaignContext.stage
         },
         client: client ? {
@@ -377,7 +393,7 @@ function GenerateAirtableCopyPageContent() {
               name: campaignContext.campaignName,
               client: campaignContext.client,
               sendDate: campaignContext.sendDate,
-              notes: campaignContext.notes,
+              notes: `${campaignContext.notes}${campaignStrategy ? `\n\nCAMPAIGN STRATEGY:\nGoal: ${campaignStrategy.primaryGoal}\nAudience: ${campaignStrategy.targetAudience}\n\nCONTENT BLOCKS STRATEGY:\n${campaignStrategy.contentBlocks.map(block => `- ${block.type.toUpperCase()}: ${block.description}${block.count ? ` (${block.count} items)` : ''} [${block.priority} priority]`).join('\n')}` : ''}`,
               stage: campaignContext.stage
             },
             client: client ? {
@@ -673,6 +689,151 @@ function GenerateAirtableCopyPageContent() {
                   <div>• Tone & brand voice from client brief</div>
                   <div>• Focus from campaign notes</div>
                   <div>• {client?.website_url ? '✅ Website will be scraped for real product data' : '⚠️ No website - using general themes only'}</div>
+                </div>
+
+                {/* Campaign Strategy Configuration */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-medium text-white">Content Strategy</h3>
+                    <button
+                      onClick={() => setShowStrategyConfig(!showStrategyConfig)}
+                      className="text-xs text-blue-400 hover:text-blue-300"
+                    >
+                      {showStrategyConfig ? 'Hide' : 'Configure'} Strategy
+                    </button>
+                  </div>
+                  
+                  {showStrategyConfig && (
+                    <div className="space-y-4 p-4 bg-dark-700/30 rounded-lg border border-dark-600">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-300 mb-2">Primary Goal</label>
+                        <input
+                          type="text"
+                          value={campaignStrategy?.primaryGoal || ''}
+                          onChange={(e) => setCampaignStrategy(prev => ({ 
+                            ...prev, 
+                            campaignType: prev?.campaignType || 'promotional',
+                            targetAudience: prev?.targetAudience || '',
+                            contentBlocks: prev?.contentBlocks || [],
+                            primaryGoal: e.target.value 
+                          }))}
+                          placeholder="e.g., Drive holiday sales, Launch new product, Build brand awareness"
+                          className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-white"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-xs font-medium text-gray-300 mb-2">Target Audience</label>
+                        <input
+                          type="text"
+                          value={campaignStrategy?.targetAudience || ''}
+                          onChange={(e) => setCampaignStrategy(prev => ({ 
+                            ...prev, 
+                            campaignType: prev?.campaignType || 'promotional',
+                            primaryGoal: prev?.primaryGoal || '',
+                            contentBlocks: prev?.contentBlocks || [],
+                            targetAudience: e.target.value 
+                          }))}
+                          placeholder="e.g., Existing customers, New prospects, Returning visitors"
+                          className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-white"
+                        />
+                      </div>
+
+                      {/* Content Blocks Editor */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="block text-xs font-medium text-gray-300">Content Blocks</label>
+                          <button
+                            onClick={() => {
+                              const currentBlocks = campaignStrategy?.contentBlocks || [];
+                              setCampaignStrategy(prev => ({ 
+                                ...prev, 
+                                campaignType: prev?.campaignType || 'promotional',
+                                primaryGoal: prev?.primaryGoal || '',
+                                targetAudience: prev?.targetAudience || '',
+                                contentBlocks: [...currentBlocks, {
+                                  type: 'hero',
+                                  description: 'New content block',
+                                  priority: 'medium'
+                                }]
+                              }));
+                            }}
+                            className="text-xs text-blue-400 hover:text-blue-300"
+                          >
+                            + Add Block
+                          </button>
+                        </div>
+                        
+                        <div className="space-y-2 max-h-32 overflow-y-auto">
+                          {(campaignStrategy?.contentBlocks || []).map((block, blockIndex) => (
+                            <div key={blockIndex} className="flex items-center space-x-2 text-xs">
+                              <select
+                                value={block.type}
+                                onChange={(e) => {
+                                  const currentBlocks = [...(campaignStrategy?.contentBlocks || [])];
+                                  currentBlocks[blockIndex] = { ...block, type: e.target.value as any };
+                                  setCampaignStrategy(prev => ({ ...prev!, contentBlocks: currentBlocks }));
+                                }}
+                                className="bg-dark-800 border border-dark-600 rounded px-1 py-0.5 text-white"
+                              >
+                                <option value="hero">Hero</option>
+                                <option value="testimonials">Testimonials</option>
+                                <option value="collection">Collection</option>
+                                <option value="product">Product</option>
+                                <option value="social-proof">Social Proof</option>
+                                <option value="urgency">Urgency</option>
+                                <option value="contact">Contact</option>
+                                <option value="offer">Offer</option>
+                                <option value="story">Story</option>
+                                <option value="education">Education</option>
+                              </select>
+                              
+                              <input
+                                type="text"
+                                placeholder="Description..."
+                                value={block.description}
+                                onChange={(e) => {
+                                  const currentBlocks = [...(campaignStrategy?.contentBlocks || [])];
+                                  currentBlocks[blockIndex] = { ...block, description: e.target.value };
+                                  setCampaignStrategy(prev => ({ ...prev!, contentBlocks: currentBlocks }));
+                                }}
+                                className="flex-1 px-1 py-0.5 bg-dark-800 border border-dark-600 rounded text-white"
+                              />
+                              
+                              {(['testimonials', 'product', 'social-proof'].includes(block.type)) && (
+                                <input
+                                  type="number"
+                                  placeholder="#"
+                                  value={block.count || ''}
+                                  onChange={(e) => {
+                                    const currentBlocks = [...(campaignStrategy?.contentBlocks || [])];
+                                    currentBlocks[blockIndex] = { ...block, count: parseInt(e.target.value) || undefined };
+                                    setCampaignStrategy(prev => ({ ...prev!, contentBlocks: currentBlocks }));
+                                  }}
+                                  className="w-12 px-1 py-0.5 bg-dark-800 border border-dark-600 rounded text-white"
+                                  min="1"
+                                  max="10"
+                                />
+                              )}
+                              
+                              <button
+                                onClick={() => {
+                                  const currentBlocks = campaignStrategy?.contentBlocks || [];
+                                  setCampaignStrategy(prev => ({ 
+                                    ...prev!, 
+                                    contentBlocks: currentBlocks.filter((_, i) => i !== blockIndex)
+                                  }));
+                                }}
+                                className="text-red-400 hover:text-red-300"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

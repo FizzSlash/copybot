@@ -19,6 +19,12 @@ interface FlowStrategy {
     offerType?: string;
     products: string;
     keyMessage: string;
+    contentBlocks: {
+      type: 'hero' | 'testimonials' | 'collection' | 'product' | 'social-proof' | 'urgency' | 'contact' | 'offer' | 'story' | 'education';
+      description: string;
+      count?: number; // For testimonials, products, etc.
+      priority: 'high' | 'medium' | 'low';
+    }[];
   }[];
 }
 
@@ -637,6 +643,32 @@ export default function FlowBuilderPage() {
                         {emailStrategy.hasOffer && (
                           <div><span className="font-medium text-gray-300">Offer Type:</span> {emailStrategy.offerType}</div>
                         )}
+                        
+                        {/* Content Blocks Strategy */}
+                        {emailStrategy.contentBlocks && emailStrategy.contentBlocks.length > 0 && (
+                          <div className="mt-3 pt-3 border-t border-dark-600">
+                            <div className="font-medium text-gray-300 mb-2">Content Blocks Strategy:</div>
+                            <div className="space-y-1">
+                              {emailStrategy.contentBlocks.map((block, blockIndex) => (
+                                <div key={blockIndex} className="flex items-center justify-between text-xs">
+                                  <div className="flex items-center space-x-2">
+                                    <span className={`px-2 py-1 rounded text-xs font-medium ${
+                                      block.priority === 'high' ? 'bg-red-500/20 text-red-300' :
+                                      block.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-300' :
+                                      'bg-gray-500/20 text-gray-300'
+                                    }`}>
+                                      {block.type.toUpperCase()}
+                                    </span>
+                                    <span className="text-gray-400">{block.description}</span>
+                                  </div>
+                                  {block.count && (
+                                    <span className="text-purple-400 font-medium">×{block.count}</span>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                     
@@ -738,6 +770,111 @@ export default function FlowBuilderPage() {
                     />
                   </div>
                 )}
+
+                {/* Content Blocks Strategy Editor */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="block text-sm font-medium text-gray-300">Content Blocks Strategy</label>
+                    <button
+                      onClick={() => {
+                        const currentBlocks = editedStrategy.emailStrategies[editingEmailIndex].contentBlocks || [];
+                        updateEmailStrategy(editingEmailIndex, { 
+                          contentBlocks: [...currentBlocks, {
+                            type: 'hero',
+                            description: 'New content block',
+                            priority: 'medium'
+                          }]
+                        });
+                      }}
+                      className="text-xs text-blue-400 hover:text-blue-300"
+                    >
+                      + Add Block
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-3 max-h-48 overflow-y-auto">
+                    {(editedStrategy.emailStrategies[editingEmailIndex].contentBlocks || []).map((block, blockIndex) => (
+                      <div key={blockIndex} className="border border-dark-600 rounded p-3 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <select
+                              value={block.type}
+                              onChange={(e) => {
+                                const currentBlocks = [...(editedStrategy.emailStrategies[editingEmailIndex].contentBlocks || [])];
+                                currentBlocks[blockIndex] = { ...block, type: e.target.value as any };
+                                updateEmailStrategy(editingEmailIndex, { contentBlocks: currentBlocks });
+                              }}
+                              className="text-xs bg-dark-700 border border-dark-600 rounded px-2 py-1 text-white"
+                            >
+                              <option value="hero">Hero</option>
+                              <option value="testimonials">Testimonials</option>
+                              <option value="collection">Collection</option>
+                              <option value="product">Product</option>
+                              <option value="social-proof">Social Proof</option>
+                              <option value="urgency">Urgency</option>
+                              <option value="contact">Contact</option>
+                              <option value="offer">Offer</option>
+                              <option value="story">Story</option>
+                              <option value="education">Education</option>
+                            </select>
+                            <select
+                              value={block.priority}
+                              onChange={(e) => {
+                                const currentBlocks = [...(editedStrategy.emailStrategies[editingEmailIndex].contentBlocks || [])];
+                                currentBlocks[blockIndex] = { ...block, priority: e.target.value as any };
+                                updateEmailStrategy(editingEmailIndex, { contentBlocks: currentBlocks });
+                              }}
+                              className="text-xs bg-dark-700 border border-dark-600 rounded px-2 py-1 text-white"
+                            >
+                              <option value="high">High</option>
+                              <option value="medium">Medium</option>
+                              <option value="low">Low</option>
+                            </select>
+                          </div>
+                          <button
+                            onClick={() => {
+                              const currentBlocks = editedStrategy.emailStrategies[editingEmailIndex].contentBlocks || [];
+                              updateEmailStrategy(editingEmailIndex, { 
+                                contentBlocks: currentBlocks.filter((_, i) => i !== blockIndex)
+                              });
+                            }}
+                            className="text-red-400 hover:text-red-300 text-xs"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        
+                        <input
+                          type="text"
+                          placeholder="Block description..."
+                          value={block.description}
+                          onChange={(e) => {
+                            const currentBlocks = [...(editedStrategy.emailStrategies[editingEmailIndex].contentBlocks || [])];
+                            currentBlocks[blockIndex] = { ...block, description: e.target.value };
+                            updateEmailStrategy(editingEmailIndex, { contentBlocks: currentBlocks });
+                          }}
+                          className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-white"
+                        />
+                        
+                        {(['testimonials', 'product', 'social-proof'].includes(block.type)) && (
+                          <input
+                            type="number"
+                            placeholder="Count (e.g., 3 for 3 testimonials)"
+                            value={block.count || ''}
+                            onChange={(e) => {
+                              const currentBlocks = [...(editedStrategy.emailStrategies[editingEmailIndex].contentBlocks || [])];
+                              currentBlocks[blockIndex] = { ...block, count: parseInt(e.target.value) || undefined };
+                              updateEmailStrategy(editingEmailIndex, { contentBlocks: currentBlocks });
+                            }}
+                            className="w-full px-2 py-1 text-xs bg-dark-800 border border-dark-600 rounded text-white"
+                            min="1"
+                            max="10"
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
               
               <div className="flex space-x-4 mt-6">

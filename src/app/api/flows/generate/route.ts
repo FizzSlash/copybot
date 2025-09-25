@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
                 name: `${strategy.flowType} - Email ${emailStrategy.emailNumber}: ${emailStrategy.theme}`,
                 client: strategy.client,
                 sendDate: `Day ${emailStrategy.day}`,
-                notes: `${emailStrategy.focus}. Key message: ${emailStrategy.keyMessage}. Products to feature: ${emailStrategy.products}. ${emailStrategy.hasOffer ? `Include offer: ${emailStrategy.offerType || strategy.offer}` : 'No offer in this email.'}`
+                notes: `${emailStrategy.focus}. Key message: ${emailStrategy.keyMessage}. Products to feature: ${emailStrategy.products}. ${emailStrategy.hasOffer ? `Include offer: ${emailStrategy.offerType || strategy.offer}` : 'No offer in this email.'}${emailStrategy.contentBlocks ? `\n\nCONTENT BLOCKS STRATEGY:\n${emailStrategy.contentBlocks.map((block: any) => `- ${block.type.toUpperCase()}: ${block.description}${block.count ? ` (${block.count} items)` : ''} [${block.priority} priority]`).join('\n')}` : ''}`
               },
               client: client ? {
                 name: client.name,
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
             tone: 'designed',
             length: 'medium', // Default medium length as requested
             focus: emailStrategy.focus,
-            additional_context: `This is email ${emailStrategy.emailNumber} of ${strategy.emailStrategies.length} in a ${strategy.flowType} flow. ${emailStrategy.hasOffer ? `This email should include the offer: ${strategy.offer}` : 'This email should NOT include any offers - focus on building trust and value.'}`
+            additional_context: `This is email ${emailStrategy.emailNumber} of ${strategy.emailStrategies.length} in a ${strategy.flowType} flow. ${emailStrategy.hasOffer ? `This email should include the offer: ${strategy.offer}` : 'This email should NOT include any offers - focus on building trust and value.'}${emailStrategy.contentBlocks ? `\n\nIMPORTANT: Follow the content blocks strategy exactly. Generate email blocks that match these requirements:\n${emailStrategy.contentBlocks.map((block: any) => `• ${block.type.toUpperCase()}: ${block.description}${block.count ? ` (create ${block.count} of these)` : ''} [${block.priority} priority - ${block.priority === 'high' ? 'MUST include' : block.priority === 'medium' ? 'should include' : 'optional'}]`).join('\n')}` : ''}`
           })
         });
 
